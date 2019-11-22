@@ -146,6 +146,14 @@ namespace BlankSpace.Controllers
         [HttpPost]
         public IActionResult AssignBus(AssignedDriverVm a)
         {
+            var sa = _context.AssignedDrivers.AsNoTracking().
+                Where(s => s.BusId == a.BusId && s.DriverId == a.DriverId).FirstOrDefault();
+            if(sa!=null)
+            {
+                ViewBag.SMS = "You have Already Asssigned  driver for this bus";
+                return View();
+            }
+
             AssignedDriver ab = new AssignedDriver() {
                 AssignedDriverId = 0,
                 BusId = a.BusId,
@@ -232,6 +240,49 @@ namespace BlankSpace.Controllers
                                 FirstOrDefault();
             _context.AssignedDrivers.Remove(assignDriver);
             _context.SaveChanges();
+            return RedirectToAction("AssignBusList");
+        }
+        public IActionResult UpdateAssignedDriver(int id)
+        {
+            var assignDriver = _context.AssignedDrivers.
+                                AsNoTracking().Where(s => s.AssignedDriverId == id).
+                                FirstOrDefault();
+
+            var driver = _context.Drivers.AsNoTracking().ToList();
+            ViewBag.Driver = new SelectList(driver, "DriverId", "Name");
+            var bus = _context.Buses.AsNoTracking().ToList();
+            ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
+
+            
+            AssignedDriverVm a = new AssignedDriverVm()
+            {
+
+                DriverId = assignDriver.DriverId,
+                BusId = assignDriver.BusId,
+                AssignedDriverId = assignDriver.AssignedDriverId
+
+            };
+            return View(a);
+        } 
+        [HttpPost]
+        public IActionResult UpdateAssignedDriver(AssignedDriverVm ab)
+        {
+           
+
+           
+
+            
+            AssignedDriver a = new AssignedDriver()
+            {
+
+                DriverId = ab.DriverId,
+                BusId = ab.BusId,
+                AssignedDriverId = ab.AssignedDriverId
+
+            };
+            _context.AssignedDrivers.Update(a);
+            _context.SaveChanges();
+
             return RedirectToAction("AssignBusList");
         }
            
