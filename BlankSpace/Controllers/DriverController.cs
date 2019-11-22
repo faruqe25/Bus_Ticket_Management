@@ -6,6 +6,7 @@ using BlankSpace.Database;
 using BlankSpace.Models;
 using BlankSpace.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlankSpace.Controllers
@@ -132,5 +133,37 @@ namespace BlankSpace.Controllers
             };
             return View(se);
         }
+        public IActionResult AssignBus()
+        {
+            var driver = _context.Drivers.AsNoTracking().ToList();
+            ViewBag.Driver = new SelectList(driver, "DriverId", "Name");
+            var bus = _context.Buses.AsNoTracking().ToList();
+            ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
+
+
+            return View();
+        }
+        public IActionResult AssignBus(AssignedDriverVm a)
+        {
+            AssignedDriver ab = new AssignedDriver() { 
+                AssignedDriverId =0,
+                BusId=a.BusId,
+                DriverId=a.DriverId
+            };
+            _context.AssignedDrivers.Add(ab);
+            _context.SaveChanges();
+            return RedirectToAction("AssignBusList");
+        }
+        public IActionResult AssignBusList()
+        {
+            var driver = _context.Drivers.AsNoTracking().ToList();
+            ViewBag.Driver = new SelectList(driver, "DriverId", "Name");
+            var bus = _context.Buses.AsNoTracking().ToList();
+            ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
+
+
+            return View();
+        }
+        
     }
 }

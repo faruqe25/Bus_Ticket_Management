@@ -89,7 +89,6 @@ C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\bin\Debug\netcoreapp2.
 C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\bin\Debug\netcoreapp2.1\BlankSpace.pdb
 C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\bin\Debug\netcoreapp2.1\BlankSpace.Views.dll
 C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\bin\Debug\netcoreapp2.1\BlankSpace.Views.pdb
-C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.1\BlankSpace.csprojAssemblyReference.cache
 C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.1\BlankSpace.RazorAssemblyInfo.cache
 C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.1\BlankSpace.RazorAssemblyInfo.cs
 C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.1\BlankSpace.AssemblyInfoInputs.cache
@@ -124,3 +123,5 @@ C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.
 C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.1\BlankSpace.dll
 C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.1\BlankSpace.pdb
 C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.1\BlankSpace.csproj.CopyComplete
+C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.1\Razor\Views\Driver\AssignBus.cshtml.g.cs
+C:\Users\Avro\Desktop\SystemProject\BlankSpace\BlankSpace\obj\Debug\netcoreapp2.1\Razor\Views\Driver\AssignBusList.cshtml.g.cs

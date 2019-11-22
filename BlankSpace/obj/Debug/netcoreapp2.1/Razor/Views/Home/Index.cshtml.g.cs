@@ -59,7 +59,7 @@ using BlankSpace.Models;
             WriteLiteral("\r\n\r\n");
             EndContext();
             BeginContext(4, 1087, false);
-            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "8059437876b640528149bd8dddd756ca", async() => {
+            __tagHelperExecutionContext = __tagHelperScopeManager.Begin("form", global::Microsoft.AspNetCore.Razor.TagHelpers.TagMode.StartTagAndEndTag, "6a93e92a7c6a47289b81bbaffe276c56", async() => {
                 BeginContext(206, 183, true);
                 WriteLiteral("\r\n    <h1 style=\"text-align:center;font-family:\'Century Gothic\';font-weight:bold;\">Add New Subject</h1>\r\n    <hr style=\"width:70%;\" />\r\n\r\n    <div class=\"row\" style=\"padding:10px;\">\r\n");
                 EndContext();
