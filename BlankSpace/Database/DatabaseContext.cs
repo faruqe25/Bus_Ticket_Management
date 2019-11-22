@@ -15,7 +15,7 @@ namespace BlankSpace.Database
         }
         public DbSet<Bus> Buses { get; set; }
         public DbSet<Driver> Drivers { get; set; }
-        public DbSet<Schedule> Schedules { get; set; }
+        
         public DbSet<BusSchedule> BusSchedules { get; set; }
         public DbSet<AssignedDriver> AssignedDrivers { get; set; }
         public DbSet<TicketReservation> TicketReservations { get; set; }
