@@ -28,14 +28,12 @@
             <td class=" h4  ">@item.Serial</td>
             <td class=" h4  ">@item.DriverName</td>
             <td class=" h4  ">@item.CoachName</td>
-
-           
             <td class=" h4  ">
-                <a asp-action="UpdateBus" asp-controller="Bus" asp-route-id="@item.AssignedDriverId"><i class="fa fa-pencil-square" style="font-size:25px;color:green"></i></a>
+                <a asp-action="UpdateAssignedDriver" asp-controller="Driver" asp-route-id="@item.AssignedDriverId"><i class="fa fa-pencil-square" style="font-size:25px;color:green"></i></a>
                 &nbsp;&nbsp;&nbsp;
-                <a asp-action="BusDetails" asp-controller="Bus" asp-route-id="@item.AssignedDriverId"><i class="fa fa-info-circle" style="font-size:25px;color:dodgerblue"></i></a>
+                <a asp-action="DetailsAssignDriver" asp-controller="Driver" asp-route-id="@item.AssignedDriverId"><i class="fa fa-info-circle" style="font-size:25px;color:dodgerblue"></i></a>
                 &nbsp;&nbsp;&nbsp;
-                <a asp-action="DeleteBus" asp-controller="Bus" asp-route-id="@item.AssignedDriverId"><i class="fa fa-trash" style="font-size:25px;color:red"></i></a>
+                <a asp-action="DeleteAssignedDriver" asp-controller="Driver" asp-route-id="@item.AssignedDriverId"><i class="fa fa-trash" style="font-size:25px;color:red"></i></a>
 
             </td>
         </tr>

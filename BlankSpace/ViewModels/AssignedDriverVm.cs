@@ -18,7 +18,11 @@ namespace BlankSpace.ViewModels
         public int DriverId { get; set; }
 
         public int Serial { get; set; }
+        public int TotalSeat { get; set; }
         public string DriverName { get; set; }
+        public Int64 DriverMobile { get; set; }
+
+        public int BusNumber { get; set; }
         public string CoachName { get; set; }
 
 

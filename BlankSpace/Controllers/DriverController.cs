@@ -27,11 +27,11 @@ namespace BlankSpace.Controllers
         public IActionResult NewDriver(DriverVm d)
         {
             Driver di = new Driver()
-            { DriverId=d.DriverVmId,
-            Name=d.Name,
-            Address=d.Address,
-            LicenseNumber=d.LicenseNumber,
-            Mobile=d.Mobile
+            { DriverId = d.DriverVmId,
+                Name = d.Name,
+                Address = d.Address,
+                LicenseNumber = d.LicenseNumber,
+                Mobile = d.Mobile
 
 
             };
@@ -51,12 +51,12 @@ namespace BlankSpace.Controllers
             {
                 DriverVm se = new DriverVm()
                 {
-                    DriverVmId=item.DriverId,
-                    Name=item.Name,
-                    Address=item.Address,
-                   Mobile=item.Mobile,
-                   LicenseNumber=item.LicenseNumber,
-                   
+                    DriverVmId = item.DriverId,
+                    Name = item.Name,
+                    Address = item.Address,
+                    Mobile = item.Mobile,
+                    LicenseNumber = item.LicenseNumber,
+
 
                 };
                 se.DriverSerial = c;
@@ -143,12 +143,13 @@ namespace BlankSpace.Controllers
 
             return View();
         }
+        [HttpPost]
         public IActionResult AssignBus(AssignedDriverVm a)
         {
-            AssignedDriver ab = new AssignedDriver() { 
-                AssignedDriverId =0,
-                BusId=a.BusId,
-                DriverId=a.DriverId
+            AssignedDriver ab = new AssignedDriver() {
+                AssignedDriverId = 0,
+                BusId = a.BusId,
+                DriverId = a.DriverId
             };
             _context.AssignedDrivers.Add(ab);
             _context.SaveChanges();
@@ -156,14 +157,85 @@ namespace BlankSpace.Controllers
         }
         public IActionResult AssignBusList()
         {
-            var driver = _context.Drivers.AsNoTracking().ToList();
-            ViewBag.Driver = new SelectList(driver, "DriverId", "Name");
-            var bus = _context.Buses.AsNoTracking().ToList();
-            ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
+            var assignDriverList = _context.AssignedDrivers.
+                                AsNoTracking().Include(s => s.Bus).
+                                Include(s => s.Driver).ToList();
+            var sent = new List<AssignedDriverVm>();
+            int c = 1;
+            foreach (var item in assignDriverList)
+            {
+                AssignedDriverVm a = new AssignedDriverVm() {
 
+                    DriverName = item.Driver.Name,
+                    CoachName = item.Bus.CoachName,
+                    AssignedDriverId = item.AssignedDriverId,
+                    Serial = c
 
-            return View();
+                };
+                c++;
+                sent.Add(a);
+
+            }
+            return View(sent);
         }
-        
+        public IActionResult DetailsAssignDriver(int id)
+        {
+            var assignDriver = _context.AssignedDrivers.
+                                AsNoTracking().Include(s => s.Bus).
+                                Include(s => s.Driver).Where(s => s.AssignedDriverId == id).
+                                FirstOrDefault();
+
+
+            AssignedDriverVm a = new AssignedDriverVm()
+            {
+
+                DriverName = assignDriver.Driver.Name,
+                CoachName = assignDriver.Bus.CoachName,
+                BusNumber= assignDriver.Bus.BusNumber,
+                DriverMobile= assignDriver.Driver.Mobile,
+                TotalSeat = assignDriver.Bus.TotalSeat
+                
+
+            };
+
+
+            return View(a);
+        }
+        public IActionResult DeleteAssignedDriver(int id)
+        {
+            var assignDriver = _context.AssignedDrivers.
+                                AsNoTracking().Include(s => s.Bus).
+                                Include(s => s.Driver).Where(s => s.AssignedDriverId == id).
+                                FirstOrDefault();
+
+
+            AssignedDriverVm a = new AssignedDriverVm()
+            {
+
+                DriverName = assignDriver.Driver.Name,
+                CoachName = assignDriver.Bus.CoachName,
+                BusNumber= assignDriver.Bus.BusNumber,
+                DriverMobile= assignDriver.Driver.Mobile,
+                TotalSeat = assignDriver.Bus.TotalSeat,
+                AssignedDriverId=assignDriver.AssignedDriverId
+
+            };
+
+
+            return View(a);
+        } 
+        [HttpPost]
+        public IActionResult DeleteAssignedDriver(AssignedDriverVm id2)
+        {
+            var assignDriver = _context.AssignedDrivers.
+                                AsNoTracking().Where(s => s.AssignedDriverId == id2.AssignedDriverId).
+                                FirstOrDefault();
+            _context.AssignedDrivers.Remove(assignDriver);
+            _context.SaveChanges();
+            return RedirectToAction("AssignBusList");
+        }
+           
     }
-}
+
+
+    }
