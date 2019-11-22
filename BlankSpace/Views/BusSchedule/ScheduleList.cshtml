@@ -33,11 +33,11 @@
                 <td class=" h4  ">@item.StartingFrom</td>
                 <td class=" h4  ">@item.Destination</td>
                 <td class=" h4  ">
-                    <a asp-action="UpdateSchedule" asp-controller="Driver" asp-route-id="@item.ScheduleId"><i class="fa fa-pencil-square" style="font-size:25px;color:green"></i></a>
+                    <a asp-action="UpdateSchedule" asp-controller="BusSchedule" asp-route-id="@item.ScheduleId"><i class="fa fa-pencil-square" style="font-size:25px;color:green"></i></a>
                     &nbsp;&nbsp;&nbsp;
-                    <a asp-action="DetailsSchedule" asp-controller="Driver" asp-route-id="@item.ScheduleId"><i class="fa fa-info-circle" style="font-size:25px;color:dodgerblue"></i></a>
+                    <a asp-action="DetailsSchedule" asp-controller="BusSchedule" asp-route-id="@item.ScheduleId"><i class="fa fa-info-circle" style="font-size:25px;color:dodgerblue"></i></a>
                     &nbsp;&nbsp;&nbsp;
-                    <a asp-action="DeleteSchedule" asp-controller="Driver" asp-route-id="@item.ScheduleId"><i class="fa fa-trash" style="font-size:25px;color:red"></i></a>
+                    <a asp-action="DeleteSchedule" asp-controller="BusSchedule" asp-route-id="@item.ScheduleId"><i class="fa fa-trash" style="font-size:25px;color:red"></i></a>
 
                 </td>
             </tr>

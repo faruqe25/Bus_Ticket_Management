@@ -61,6 +61,69 @@ namespace BlankSpace.Controllers
            
 
             return View(sent);
+        } 
+        public IActionResult DetailsSchedule(int id)
+        {
+            var s = _context.Schedules.AsNoTracking().Where(sa => sa.ScheduleId == id).FirstOrDefault();
+            
+                ScheduleVm sp = new ScheduleVm()
+                {
+                    ScheduleId = s.ScheduleId,
+                    Destination = s.Destination,
+                    StartingFrom = s.StartingFrom,
+                    Time = s.Time,
+                };
+            return View(sp);
+        }
+        public IActionResult DeleteSchedule(int id)
+        {
+            var s = _context.Schedules.AsNoTracking().Where(sa => sa.ScheduleId == id).FirstOrDefault();
+            
+                ScheduleVm sp = new ScheduleVm()
+                {
+                    ScheduleId = s.ScheduleId,
+                    Destination = s.Destination,
+                    StartingFrom = s.StartingFrom,
+                    Time = s.Time,
+                };
+            return View(sp); 
+        }
+        [HttpPost]
+        public IActionResult DeleteSchedule(ScheduleVm a)
+        {
+            var s = _context.Schedules.AsNoTracking().Where(sa => sa.ScheduleId == a.ScheduleId).FirstOrDefault();
+
+            _context.Schedules.Remove(s);
+            _context.SaveChanges();
+            return RedirectToAction("ScheduleList");
+        } 
+        public IActionResult UpdateSchedule(int  id) 
+        {
+            var s = _context.Schedules.AsNoTracking().Where(sa => sa.ScheduleId == id).FirstOrDefault();
+
+            ScheduleVm sp = new ScheduleVm()
+            {
+                ScheduleId = s.ScheduleId,
+                Destination = s.Destination,
+                StartingFrom = s.StartingFrom,
+                Time = s.Time,
+            };
+            return View(sp);
+        }
+        [HttpPost]
+        public IActionResult UpdateSchedule(Schedule a)
+        {
+            Schedule s = new Schedule()
+            {
+                ScheduleId = a.ScheduleId,
+                Destination = a.Destination,
+                StartingFrom = a.StartingFrom,
+                Time = a.Time,
+
+            };
+            _context.Schedules.Update(s);
+            _context.SaveChanges();
+            return RedirectToAction("ScheduleList");
         }
     }
 }

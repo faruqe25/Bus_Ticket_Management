@@ -1,0 +1,38 @@
+﻿@model BlankSpace.ViewModels.ScheduleVm
+
+@{
+    ViewData["Title"] = "DetailsSchedule";
+}
+
+<h2 class="text-center">Details Schedule</h2>
+
+<div class="col-md-4 col-md-offset-4">
+    
+    <hr />
+    <dl class="dl-horizontal h5">
+ 
+        <dt>
+            @Html.DisplayNameFor(model => model.StartingFrom)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StartingFrom)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Destination)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Destination)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Time)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Time)
+        </dd>
+    </dl>
+    <div>
+      
+        <a asp-action="ScheduleList">Back to List</a>
+    </div>
+</div>
+
