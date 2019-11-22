@@ -15,8 +15,9 @@ namespace BlankSpace.Models
         [Key]
         public int BusScheduleId { get; set; }
         public int TicketPrice { get; set; }
-        public int ScheduleId { get; set; }
-        public Schedule Schedule { get; set; }
+        public string StartingFrom { get; set; }
+        public string Destination { get; set; }
+        public string Time { get; set; }
         public int BusId { get; set; }
         public Bus Bus { get; set; }
         public virtual ICollection<TicketReservation> TicketReservations { get; set; }

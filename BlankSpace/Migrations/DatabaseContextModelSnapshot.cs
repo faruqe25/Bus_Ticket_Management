@@ -15,7 +15,7 @@ namespace BlankSpace.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
+                .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -80,15 +80,17 @@ namespace BlankSpace.Migrations
 
                     b.Property<int>("BusId");
 
-                    b.Property<int>("ScheduleId");
+                    b.Property<string>("Destination");
+
+                    b.Property<string>("StartingFrom");
 
                     b.Property<int>("TicketPrice");
+
+                    b.Property<string>("Time");
 
                     b.HasKey("BusScheduleId");
 
                     b.HasIndex("BusId");
-
-                    b.HasIndex("ScheduleId");
 
                     b.ToTable("BusSchedules");
                 });
@@ -221,11 +223,6 @@ namespace BlankSpace.Migrations
                     b.HasOne("BlankSpace.Models.Bus", "Bus")
                         .WithMany()
                         .HasForeignKey("BusId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("BlankSpace.Models.Schedule", "Schedule")
-                        .WithMany()
-                        .HasForeignKey("ScheduleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

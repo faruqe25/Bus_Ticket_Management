@@ -1,4 +1,4 @@
-﻿@model BlankSpace.ViewModels.ScheduleVm
+﻿@model BlankSpace.ViewModels.BusScheduleVm
 
 @{
     ViewData["Title"] = "DetailsSchedule";
@@ -10,7 +10,12 @@
     
     <hr />
     <dl class="dl-horizontal h5">
- 
+        <dt>
+            @Html.DisplayNameFor(model => model.CoachName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CoachName)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.StartingFrom)
         </dt>
@@ -28,6 +33,12 @@
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Time)
+        </dd> 
+        <dt>
+            @Html.DisplayNameFor(model => model.TicketPrice)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TicketPrice) Tk only
         </dd>
     </dl>
     <div>

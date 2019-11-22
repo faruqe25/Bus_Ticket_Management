@@ -6,6 +6,7 @@ using BlankSpace.Database;
 using BlankSpace.Models;
 using BlankSpace.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlankSpace.Controllers
@@ -19,39 +20,46 @@ namespace BlankSpace.Controllers
             _context = context;
         }
         public IActionResult AddSchedule()
-        { 
+        {
+            var bus = _context.Buses.AsNoTracking().ToList();
+            ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
             return View();
         } 
         [HttpPost]
-        public IActionResult AddSchedule(ScheduleVm a)
+        public IActionResult AddSchedule(BusScheduleVm a)
         {
-            Schedule s = new Schedule()
+            BusSchedule s = new BusSchedule()
             {
-                ScheduleId = 0,
+                BusScheduleId = 0,
                 Destination = a.Destination,
                 StartingFrom = a.StartingFrom,
                 Time = a.Time,
+                BusId=a.BusId,
+                TicketPrice=a.TicketPrice
+
 
             };
-            _context.Schedules.Add(s);
+            _context.BusSchedules.Add(s);
             _context.SaveChanges();
 
             return RedirectToAction("ScheduleList");
         }
         public IActionResult ScheduleList()
         {
-            var s = _context.Schedules.AsNoTracking().ToList();
-            var sent = new List<ScheduleVm>();
+            var s = _context.BusSchedules.AsNoTracking().Include(sp=>sp.Bus).ToList();
+            var sent = new List<BusScheduleVm>();
             int c = 1;
             foreach (var item in s)
             {
-                ScheduleVm sp = new ScheduleVm()
+                BusScheduleVm sp = new BusScheduleVm()
                 {
-                    ScheduleId = item.ScheduleId,
+                    BusScheduleId = item.BusScheduleId,
                     Destination = item.Destination,
                     StartingFrom = item.StartingFrom,
                     Time = item.Time,
-                    Serial = c
+                    Serial = c,
+                    CoachName=item.Bus.CoachName,
+                    TicketPrice=item.TicketPrice
 
                 };
                 sent.Add(sp);
@@ -64,66 +72,78 @@ namespace BlankSpace.Controllers
         } 
         public IActionResult DetailsSchedule(int id)
         {
-            var s = _context.Schedules.AsNoTracking().Where(sa => sa.ScheduleId == id).FirstOrDefault();
-            
-                ScheduleVm sp = new ScheduleVm()
+            var s = _context.BusSchedules.AsNoTracking().Where(sa => sa.BusScheduleId == id).Include(p=>p.Bus).FirstOrDefault();
+
+            BusScheduleVm sp = new BusScheduleVm()
                 {
-                    ScheduleId = s.ScheduleId,
+                    BusScheduleId = s.BusScheduleId,
                     Destination = s.Destination,
                     StartingFrom = s.StartingFrom,
                     Time = s.Time,
+                    TicketPrice=s.TicketPrice,
+                    CoachName=s.Bus.CoachName
                 };
             return View(sp);
         }
         public IActionResult DeleteSchedule(int id)
         {
-            var s = _context.Schedules.AsNoTracking().Where(sa => sa.ScheduleId == id).FirstOrDefault();
-            
-                ScheduleVm sp = new ScheduleVm()
-                {
-                    ScheduleId = s.ScheduleId,
-                    Destination = s.Destination,
-                    StartingFrom = s.StartingFrom,
-                    Time = s.Time,
-                };
+            var s = _context.BusSchedules.AsNoTracking().Where(sa => sa.BusScheduleId == id).Include(a=>a.Bus).FirstOrDefault();
+
+            BusScheduleVm sp = new BusScheduleVm()
+            {
+                BusScheduleId = s.BusScheduleId,
+                Destination = s.Destination,
+                StartingFrom = s.StartingFrom,
+                Time = s.Time,
+                TicketPrice = s.TicketPrice,
+                CoachName = s.Bus.CoachName
+            };
             return View(sp); 
         }
         [HttpPost]
-        public IActionResult DeleteSchedule(ScheduleVm a)
+        public IActionResult DeleteSchedule(BusScheduleVm a)
         {
-            var s = _context.Schedules.AsNoTracking().Where(sa => sa.ScheduleId == a.ScheduleId).FirstOrDefault();
+            var s = _context.BusSchedules.AsNoTracking().Where(sa => sa.BusScheduleId == a.BusScheduleId).FirstOrDefault();
 
-            _context.Schedules.Remove(s);
+            _context.BusSchedules.Remove(s);
             _context.SaveChanges();
             return RedirectToAction("ScheduleList");
         } 
         public IActionResult UpdateSchedule(int  id) 
         {
-            var s = _context.Schedules.AsNoTracking().Where(sa => sa.ScheduleId == id).FirstOrDefault();
+            var bus = _context.Buses.AsNoTracking().ToList();
+            ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
+            var s = _context.BusSchedules.AsNoTracking().Where(sa => sa.BusScheduleId == id).FirstOrDefault();
 
-            ScheduleVm sp = new ScheduleVm()
+            BusScheduleVm sp = new BusScheduleVm()
             {
-                ScheduleId = s.ScheduleId,
+                BusScheduleId = s.BusScheduleId,
                 Destination = s.Destination,
                 StartingFrom = s.StartingFrom,
                 Time = s.Time,
+                BusId=s.BusId,
+                TicketPrice=s.TicketPrice
             };
             return View(sp);
         }
         [HttpPost]
-        public IActionResult UpdateSchedule(Schedule a)
+        public IActionResult UpdateSchedule(BusScheduleVm a)
         {
-            Schedule s = new Schedule()
+            BusSchedule s = new BusSchedule()
             {
-                ScheduleId = a.ScheduleId,
+                BusScheduleId = a.BusScheduleId,
                 Destination = a.Destination,
                 StartingFrom = a.StartingFrom,
                 Time = a.Time,
+                BusId = a.BusId,
+                TicketPrice = a.TicketPrice
+
 
             };
-            _context.Schedules.Update(s);
+            _context.BusSchedules.Update(s);
             _context.SaveChanges();
             return RedirectToAction("ScheduleList");
         }
+      
     }
 }

@@ -1,4 +1,4 @@
-﻿@model BlankSpace.ViewModels.ScheduleVm
+﻿@model BlankSpace.ViewModels.BusScheduleVm
 
 @{
     ViewData["Title"] = "Update Schedule";
@@ -14,7 +14,14 @@
         <hr />
         <form asp-action="UpdateSchedule">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="ScheduleId" type="hidden" />
+            <input asp-for="BusScheduleId" type="hidden" />
+            <div class="form-group">
+                <label asp-for="BusId" class="control-label h4"></label>
+                <select asp-items="@ViewBag.Bus" asp-for="BusId" class="form-control">
+                    <option hidden disabled selected>Please Select Bus</option>
+                </select>
+                <span asp-validation-for="BusId" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <label asp-for="StartingFrom" class="control-label h4"></label>
                 <input asp-for="StartingFrom" class="form-control" />
@@ -29,7 +36,13 @@
                 <label asp-for="Time" class="control-label h4"></label>
                 <input asp-for="Time" class="form-control" />
                 <span asp-validation-for="Time" class="text-danger"></span>
+            </div> 
+            <div class="form-group">
+                <label asp-for="TicketPrice" class="control-label h4"></label>
+                <input asp-for="TicketPrice" class="form-control" />
+                <span asp-validation-for="TicketPrice" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
                 <input type="submit" value="Update" class="btn btn-success" />
             </div>
