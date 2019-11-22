@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Avro\\source\\repos\\BlankSpace\\BlankSpace\\BlankSpace.csproj": {}
+    "C:\\Users\\Avro\\Desktop\\SystemProject\\BlankSpace\\BlankSpace\\BlankSpace.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Avro\\source\\repos\\BlankSpace\\BlankSpace\\BlankSpace.csproj": {
+    "C:\\Users\\Avro\\Desktop\\SystemProject\\BlankSpace\\BlankSpace\\BlankSpace.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Avro\\source\\repos\\BlankSpace\\BlankSpace\\BlankSpace.csproj",
+        "projectUniqueName": "C:\\Users\\Avro\\Desktop\\SystemProject\\BlankSpace\\BlankSpace\\BlankSpace.csproj",
         "projectName": "BlankSpace",
-        "projectPath": "C:\\Users\\Avro\\source\\repos\\BlankSpace\\BlankSpace\\BlankSpace.csproj",
+        "projectPath": "C:\\Users\\Avro\\Desktop\\SystemProject\\BlankSpace\\BlankSpace\\BlankSpace.csproj",
         "packagesPath": "C:\\Users\\Avro\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Avro\\source\\repos\\BlankSpace\\BlankSpace\\obj\\",
+        "outputPath": "C:\\Users\\Avro\\Desktop\\SystemProject\\BlankSpace\\BlankSpace\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
