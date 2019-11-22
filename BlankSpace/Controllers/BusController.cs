@@ -1,0 +1,86 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BlankSpace.Repository;
+using BlankSpace.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+
+namespace BlankSpace.Controllers
+{
+    public class BusController : Controller
+    {
+        private readonly IBusRepository _context;
+
+        public BusController(IBusRepository context)
+        {
+            _context = context;
+        }
+        public IActionResult NewBus()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult NewBus(BusVm v)
+        {
+            _context.AddNewBus(v);
+            ModelState.Clear();
+            return View();
+        }
+        public IActionResult BusList()
+        {
+            var s = _context.GetAllBuses();
+            var busList = new List<BusVm>();
+            int c = 1;
+            foreach (var item in s)
+            {
+                BusVm a = new BusVm
+                {
+                    BusId=item.BusId,
+                    BusNumber=item.BusNumber,
+                    TotalSeat=item.TotalSeat,
+                    CoachName=item.CoachName,
+                    
+
+                };
+                a.BusSerial = c;
+                c++;
+                busList.Add(a);
+
+
+
+            }
+            return View(busList);
+        }
+        public IActionResult DeleteBus(int id)
+        {
+            
+            return View(_context.GetBus(id));
+        }
+        [HttpPost]
+        public IActionResult DeleteBus(BusVm a)
+        {
+            _context.DeleteBus(a);
+            return RedirectToAction("BusList");
+        }
+        
+        public IActionResult UpdateBus(int id)
+        {
+            return View(_context.GetBus(id));
+        }
+
+        [HttpPost]
+        public IActionResult UpdateBus(BusVm v)
+        {
+            _context.UpdateBus(v);
+            return RedirectToAction("BusList");
+        }
+
+        public IActionResult BusDetails(int id)
+        {
+            return View(_context.GetBus(id));
+        }
+
+
+    }
+}

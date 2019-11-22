@@ -1,0 +1,136 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using BlankSpace.Database;
+using BlankSpace.Models;
+using BlankSpace.ViewModels;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+
+namespace BlankSpace.Controllers
+{
+    public class DriverController : Controller
+    {
+        private readonly DatabaseContext _context;
+
+        public DriverController(DatabaseContext context)
+        {
+            _context = context;
+        }
+        public IActionResult NewDriver()
+        {
+            return View();
+        }
+        [HttpPost]
+        public IActionResult NewDriver(DriverVm d)
+        {
+            Driver di = new Driver()
+            { DriverId=d.DriverVmId,
+            Name=d.Name,
+            Address=d.Address,
+            LicenseNumber=d.LicenseNumber,
+            Mobile=d.Mobile
+
+
+            };
+            _context.Drivers.Add(di);
+            _context.SaveChanges();
+
+
+
+            return View();
+        }
+        public IActionResult DriverList()
+        {
+            var s = _context.Drivers.AsNoTracking().ToList();
+            var dr = new List<DriverVm>();
+            int c = 1;
+            foreach (var item in s)
+            {
+                DriverVm se = new DriverVm()
+                {
+                    DriverVmId=item.DriverId,
+                    Name=item.Name,
+                    Address=item.Address,
+                   Mobile=item.Mobile,
+                   LicenseNumber=item.LicenseNumber,
+                   
+
+                };
+                se.DriverSerial = c;
+                c++;
+                dr.Add(se);
+            }
+            return View(dr);
+        }
+        public IActionResult UpdateDriver(int id)
+        {
+            var item = _context.Drivers.AsNoTracking().Where(s => s.DriverId == id).FirstOrDefault();
+            DriverVm se = new DriverVm()
+            {
+                DriverVmId = item.DriverId,
+                Name = item.Name,
+                Address = item.Address,
+                Mobile = item.Mobile,
+                LicenseNumber = item.LicenseNumber,
+
+            };
+            return View(se);
+        }
+        [HttpPost]
+        public IActionResult UpdateDriver(DriverVm d)
+        {
+            Driver di = new Driver()
+            {
+                DriverId = d.DriverVmId,
+                Name = d.Name,
+                Address = d.Address,
+                LicenseNumber = d.LicenseNumber,
+                Mobile = d.Mobile
+
+
+            };
+            _context.Drivers.Update(di);
+            _context.SaveChanges();
+
+            return View();
+        }
+        public IActionResult DeleteDriver(int id)
+        {
+            var item = _context.Drivers.AsNoTracking().Where(s => s.DriverId == id).FirstOrDefault();
+            DriverVm se = new DriverVm()
+            {
+                DriverVmId = item.DriverId,
+                Name = item.Name,
+                Address = item.Address,
+                Mobile = item.Mobile,
+                LicenseNumber = item.LicenseNumber,
+
+            };
+            return View(se);
+        }
+        [HttpPost]
+        public IActionResult DeleteDriver(DriverVm se)
+        {
+            _context.Drivers.Remove(_context.Drivers.AsNoTracking().Where(s => s.DriverId == se.DriverVmId).FirstOrDefault());
+            _context.SaveChanges();
+            return RedirectToAction("DriverList");
+        }
+        public IActionResult DriverDetails(int id)
+
+        {
+            var item = _context.Drivers.AsNoTracking().Where(s => s.DriverId == id).FirstOrDefault();
+            DriverVm se = new DriverVm()
+            {
+                DriverVmId = item.DriverId,
+                Name = item.Name,
+                Address = item.Address,
+                Mobile = item.Mobile,
+                LicenseNumber = item.LicenseNumber,
+
+            };
+            return View(se);
+        }
+    }
+}
