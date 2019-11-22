@@ -12,14 +12,14 @@
     <div class="col-md-4 col-md-offset-4">
         <form asp-action="NewDriver">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label h4"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Mobile" class="control-label"></label>
+                <label asp-for="Mobile" class="control-label h4"></label>
                 <input asp-for="Mobile" class="form-control" />
                 <span asp-validation-for="Mobile" class="text-danger"></span>
             </div>
@@ -37,10 +37,11 @@
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
+        <div>
+            <a asp-action="DriverList">Back to List</a>
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="DriverList">Back to List</a>
-</div>
+
 
