@@ -1,0 +1,34 @@
+﻿@model BlankSpace.ViewModels.PlaceVm
+
+@{
+    ViewData["Title"] = "AddRoute";
+}
+
+
+
+
+
+<div class="row ">
+    <div class="col-md-4 col-md-offset-4">
+        <h2>Add Route</h2>
+        <hr />
+        <form asp-action="AddRoute">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="PlaceName" class="control-label"></label>
+                <input asp-for="PlaceName" class="form-control" />
+                <span asp-validation-for="PlaceName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+        <div>
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </div>
+</div>
+
+
+

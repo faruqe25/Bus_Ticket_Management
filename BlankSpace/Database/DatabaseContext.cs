@@ -24,6 +24,7 @@ namespace BlankSpace.Database
 
         public DbSet<User> Users { get; set; }
         public DbSet<RoleType> RoleTypes { get; set; }
+        public DbSet<Place> Places { get; set; } 
 
 
 

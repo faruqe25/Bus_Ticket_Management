@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlankSpace.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20191122172032_CorrectionOfBusSchedule")]
-    partial class CorrectionOfBusSchedule
+    [Migration("20191125173416_Add_Place2")]
+    partial class Add_Place2
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -30,6 +30,8 @@ namespace BlankSpace.Migrations
                     b.Property<string>("Address");
 
                     b.Property<DateTime>("DOB");
+
+                    b.Property<long>("Mobile");
 
                     b.Property<string>("Name");
 
@@ -82,9 +84,9 @@ namespace BlankSpace.Migrations
 
                     b.Property<int>("BusId");
 
-                    b.Property<string>("Destination");
+                    b.Property<int>("Destination");
 
-                    b.Property<string>("StartingFrom");
+                    b.Property<int>("StartingFrom");
 
                     b.Property<int>("TicketPrice");
 
@@ -131,6 +133,19 @@ namespace BlankSpace.Migrations
                     b.ToTable("Passengers");
                 });
 
+            modelBuilder.Entity("BlankSpace.Models.Place", b =>
+                {
+                    b.Property<int>("PlaceId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PlaceName");
+
+                    b.HasKey("PlaceId");
+
+                    b.ToTable("Places");
+                });
+
             modelBuilder.Entity("BlankSpace.Models.RoleType", b =>
                 {
                     b.Property<int>("RoleTypeId")
@@ -142,23 +157,6 @@ namespace BlankSpace.Migrations
                     b.HasKey("RoleTypeId");
 
                     b.ToTable("RoleTypes");
-                });
-
-            modelBuilder.Entity("BlankSpace.Models.Schedule", b =>
-                {
-                    b.Property<int>("ScheduleId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Destination");
-
-                    b.Property<string>("StartingFrom");
-
-                    b.Property<string>("Time");
-
-                    b.HasKey("ScheduleId");
-
-                    b.ToTable("Schedules");
                 });
 
             modelBuilder.Entity("BlankSpace.Models.TicketReservation", b =>

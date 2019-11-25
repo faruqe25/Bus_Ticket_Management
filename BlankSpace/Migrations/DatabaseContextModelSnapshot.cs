@@ -82,9 +82,9 @@ namespace BlankSpace.Migrations
 
                     b.Property<int>("BusId");
 
-                    b.Property<string>("Destination");
+                    b.Property<int>("Destination");
 
-                    b.Property<string>("StartingFrom");
+                    b.Property<int>("StartingFrom");
 
                     b.Property<int>("TicketPrice");
 
@@ -129,6 +129,19 @@ namespace BlankSpace.Migrations
                     b.HasKey("PassengerId");
 
                     b.ToTable("Passengers");
+                });
+
+            modelBuilder.Entity("BlankSpace.Models.Place", b =>
+                {
+                    b.Property<int>("PlaceId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("PlaceName");
+
+                    b.HasKey("PlaceId");
+
+                    b.ToTable("Places");
                 });
 
             modelBuilder.Entity("BlankSpace.Models.RoleType", b =>

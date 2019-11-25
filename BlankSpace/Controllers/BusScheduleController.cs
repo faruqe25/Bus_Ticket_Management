@@ -19,10 +19,24 @@ namespace BlankSpace.Controllers
         {
             _context = context;
         }
+        [HttpGet]
+        [HttpPost]
+        public JsonResult check(int id)
+        {
+            var d = _context.Places.AsNoTracking().Where(s => s.PlaceId != id).ToList();
+            var slist = new SelectList(d, "PlaceId", "PlaceName");
+
+            return Json(slist);
+        }
         public IActionResult AddSchedule()
         {
             var bus = _context.Buses.AsNoTracking().ToList();
             ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
+
+            var start = _context.Places.AsNoTracking().ToList();
+            ViewBag.Start = new SelectList(start, "PlaceId", "PlaceName");
+
+           
             return View();
         } 
         [HttpPost]
@@ -144,6 +158,25 @@ namespace BlankSpace.Controllers
             _context.SaveChanges();
             return RedirectToAction("ScheduleList");
         }
-      
+
+        public IActionResult AddRoute()
+        {
+
+            return View();
+        }
+        [HttpPost]
+        public IActionResult AddRoute(PlaceVm a)
+        {
+            Place b = new Place()
+            {
+                PlaceId = a.PlaceId,
+                PlaceName = a.PlaceName
+            };
+            _context.Places.Add(b);
+            _context.SaveChanges();
+            ModelState.Clear();
+            return View();
+        }
+
     }
 }

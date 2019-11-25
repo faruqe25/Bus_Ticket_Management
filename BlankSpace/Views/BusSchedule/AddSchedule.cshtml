@@ -17,18 +17,21 @@
             <div class="form-group">
                 <label asp-for="BusId" class="control-label h4"></label>
                 <select asp-items="@ViewBag.Bus" asp-for="BusId" class="form-control">
-                    <option hidden disabled selected >Please Select Bus</option>
+                    <option hidden disabled selected>Please Select Bus</option>
                 </select>
                 <span asp-validation-for="BusId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StartingFrom" class="control-label h4"></label>
-                <input asp-for="StartingFrom" class="form-control" />
+                <select asp-for="StartingFrom" asp-items="@ViewBag.Start" id="Start" class="form-control">
+                    <option disabled selected hidden>Please Select Your City</option>
+                </select>
                 <span asp-validation-for="StartingFrom" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Destination" class="control-label h4"></label>
-                <input asp-for="Destination" class="form-control" />
+                <select asp-for="Destination" id="Des" class="form-control">
+                </select>
                 <span asp-validation-for="Destination" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -51,5 +54,43 @@
 
     </div>
 </div>
+
+
+@section Scripts{
+
+
+    <script type="text/javascript">
+
+        //insert the default value to the section
+
+        $(document).ready(function () {
+            var items = "<option value='0'>Select Your Place</option>";
+            $("#Des").html(items);
+        });
+        //Set the section to select list according to class
+        $("#Start").change(function () {
+            if ($("#Start").val() == 0) {
+                var items = "<option disabled selected hidden>Select Your Place </option>";
+                $("#Des").html(items);
+            }
+            else {
+                var Startid = $("#Start").val();
+                var url = "/BusSchedule/check";
+                $.getJSON(url,{id:Startid},function (data){
+                    var items = "<option disabled selected hidden >Select Destinition  &#x2935</option>";
+                    $("#Des").empty();
+                    $.each(data, function (i, sec) {
+                        items += '<option value="' + sec.value + '">' + sec.text + '</option > ';
+                    });
+                    $("#Des").html(items);
+                });
+
+            }
+        });
+
+    </script>
+
+
+}
 
 

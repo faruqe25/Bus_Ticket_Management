@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BlankSpace.Migrations
 {
-    public partial class CorrectionOfBusSchedule : Migration
+    public partial class Add_Place : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,6 +14,7 @@ namespace BlankSpace.Migrations
                 {
                     AgentId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Mobile = table.Column<long>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     DOB = table.Column<DateTime>(nullable: false),
                     Address = table.Column<string>(nullable: true)
@@ -69,6 +70,19 @@ namespace BlankSpace.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Places",
+                columns: table => new
+                {
+                    PlaceId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    PlaceName = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Places", x => x.PlaceId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RoleTypes",
                 columns: table => new
                 {
@@ -82,29 +96,14 @@ namespace BlankSpace.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Schedules",
-                columns: table => new
-                {
-                    ScheduleId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    StartingFrom = table.Column<string>(nullable: true),
-                    Destination = table.Column<string>(nullable: true),
-                    Time = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Schedules", x => x.ScheduleId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BusSchedules",
                 columns: table => new
                 {
                     BusScheduleId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     TicketPrice = table.Column<int>(nullable: false),
-                    StartingFrom = table.Column<string>(nullable: true),
-                    Destination = table.Column<string>(nullable: true),
+                    StartingFrom = table.Column<int>(nullable: false),
+                    Destination = table.Column<int>(nullable: false),
                     Time = table.Column<string>(nullable: true),
                     BusId = table.Column<int>(nullable: false)
                 },
@@ -243,7 +242,7 @@ namespace BlankSpace.Migrations
                 name: "AssignedDrivers");
 
             migrationBuilder.DropTable(
-                name: "Schedules");
+                name: "Places");
 
             migrationBuilder.DropTable(
                 name: "TicketReservations");

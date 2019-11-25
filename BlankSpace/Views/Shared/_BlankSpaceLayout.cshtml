@@ -96,12 +96,23 @@
                     <li class="sub-menu">
                         <a href="javascript:;">
                             <i class="fa fa-clock-o"></i>
+                            <span>Manage Bus Route</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a asp-controller="BusSchedule" asp-action="AddRoute">Add New Route</a></li>
+                            <li><a asp-controller="BusSchedule" asp-action="RouteList"> Route List</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;">
+                            <i class="fa fa-clock-o"></i>
                             <span>Manage Bus Schedule</span>
                         </a>
                         <ul class="sub">
                             <li><a asp-controller="BusSchedule" asp-action="AddSchedule">Add New Schedule</a></li>
                             <li><a asp-controller="BusSchedule" asp-action="ScheduleList"> Schedule List</a></li>
-                           
+
                         </ul>
                     </li>
                     <li class="sub-menu">
@@ -111,6 +122,16 @@
                         </a>
                         <ul class="sub">
                             <li><a asp-controller="User" asp-action="AddNewAgent">Add New Agent</a></li>
+                            <li><a asp-controller="User" asp-action="AgentList"> Agent List</a></li>
+                        </ul>
+                    </li>
+                    <li class="sub-menu">
+                        <a href="javascript:;">
+                            <i class="fa fa-user"></i>
+                            <span>Ticket Management</span>
+                        </a>
+                        <ul class="sub">
+                            <li><a asp-controller="TicketBooking" asp-action="Index">Ticket Booking</a></li>
                             <li><a asp-controller="User" asp-action="AgentList"> Agent List</a></li>
                         </ul>
                     </li>

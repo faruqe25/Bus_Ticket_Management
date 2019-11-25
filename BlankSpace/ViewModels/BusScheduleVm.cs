@@ -10,8 +10,8 @@ namespace BlankSpace.ViewModels
     {
         public int BusScheduleId { get; set; }
         [Display(Name = "Journey Start From")]
-        public string StartingFrom { get; set; }
-        public string Destination { get; set; }
+        public int StartingFrom { get; set; }
+        public int Destination { get; set; }
         public string Time { get; set; }
         [Display(Name = "Ticket Price")]
         public int TicketPrice { get; set; }
