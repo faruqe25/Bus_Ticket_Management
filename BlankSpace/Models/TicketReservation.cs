@@ -11,6 +11,7 @@ namespace BlankSpace.Models
         [Key]
         public int TicketReservationId { get; set; }
         public bool ConfirmStatus { get; set; }
+        public string SeatNumber { get; set; } 
         public DateTime Date { get; set; }
         public int BusScheduleId { get; set; }
         public BusSchedule BusSchedule { get; set; }

@@ -24,9 +24,27 @@ namespace BlankSpace.Database
 
         public DbSet<User> Users { get; set; }
         public DbSet<RoleType> RoleTypes { get; set; }
-        public DbSet<Place> Places { get; set; } 
+        public DbSet<Place> Places { get; set; }
 
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Agent>().HasData(
+                new Agent {
+                    Address="Null",
+                    AgentId=1,
+                    Mobile=0,
+                  
+                }
+                );
+            modelBuilder.Entity<Passenger>().HasData(
+               new Passenger
+               {
+                   Name = "Null",
+                   PassengerId = 1,
+                   Mobile = 0,
+               }
+               );
+        }
 
     }
 }

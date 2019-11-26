@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BlankSpace.Migrations
 {
-    public partial class Add_Place : Migration
+    public partial class Seed : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -75,7 +75,7 @@ namespace BlankSpace.Migrations
                 {
                     PlaceId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    PlaceName = table.Column<int>(nullable: false)
+                    PlaceName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -172,6 +172,7 @@ namespace BlankSpace.Migrations
                     TicketReservationId = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ConfirmStatus = table.Column<bool>(nullable: false),
+                    SeatNumber = table.Column<string>(nullable: true),
                     Date = table.Column<DateTime>(nullable: false),
                     BusScheduleId = table.Column<int>(nullable: false),
                     AgentId = table.Column<int>(nullable: false),
@@ -199,6 +200,16 @@ namespace BlankSpace.Migrations
                         principalColumn: "PassengerId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Agents",
+                columns: new[] { "AgentId", "Address", "DOB", "Mobile", "Name" },
+                values: new object[] { 1, "Null", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), 0L, null });
+
+            migrationBuilder.InsertData(
+                table: "Passengers",
+                columns: new[] { "PassengerId", "Mobile", "Name" },
+                values: new object[] { 1, 0L, "Null" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AssignedDrivers_BusId",

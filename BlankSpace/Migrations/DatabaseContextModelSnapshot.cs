@@ -36,6 +36,10 @@ namespace BlankSpace.Migrations
                     b.HasKey("AgentId");
 
                     b.ToTable("Agents");
+
+                    b.HasData(
+                        new { AgentId = 1, Address = "Null", DOB = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), Mobile = 0L }
+                    );
                 });
 
             modelBuilder.Entity("BlankSpace.Models.AssignedDriver", b =>
@@ -129,6 +133,10 @@ namespace BlankSpace.Migrations
                     b.HasKey("PassengerId");
 
                     b.ToTable("Passengers");
+
+                    b.HasData(
+                        new { PassengerId = 1, Mobile = 0L, Name = "Null" }
+                    );
                 });
 
             modelBuilder.Entity("BlankSpace.Models.Place", b =>
@@ -172,6 +180,8 @@ namespace BlankSpace.Migrations
                     b.Property<DateTime>("Date");
 
                     b.Property<int>("PassengerId");
+
+                    b.Property<string>("SeatNumber");
 
                     b.HasKey("TicketReservationId");
 

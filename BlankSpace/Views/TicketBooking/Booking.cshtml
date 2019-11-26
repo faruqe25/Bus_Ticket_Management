@@ -1,0 +1,176 @@
+﻿@model List<BlankSpace.ViewModels.TicketReservationVm>
+@{
+    ViewData["Title"] = "Booking";
+}
+
+
+<form id="ImageStatus">
+    <h2>Booking</h2>
+    <div class="col-md-4 col-md-offset-4">
+        @{int i, k; }
+        @for (i = 0; i < Model.Count(); i++)
+        {
+            k = i;
+            @if (k % 4 == 0 && k > 0)
+            {
+                <br />
+                <br />
+                <br />
+            }
+
+            <div class="col-md-1 col-lg-1 col-sm-2 col-xs-4" style="padding:0px;border:0px;width:50px">
+                @if (Model[i].ConfirmStatus == true)
+                {
+
+                    <img src="~/images/RedGood.svg" class="img-responsive" style="width:30px;height:30px" alt="@i" asp-append-version="true" />
+                }
+                else
+                {
+
+
+                    <img src="~/images/Green.svg" class="img-responsive" style="width:30px;height:30px" alt="@i" asp-append-version="true" />
+                }
+
+                <span>@Model[i].SeatNumber</span>
+                <input type="hidden" asp-for="@Model[i].PassengerId" />
+                <input type="hidden" asp-for="@Model[i].TicketReservationId" />
+                <input type="hidden" asp-for="@Model[i].AgentId" />
+                <input type="hidden" asp-for="@Model[i].Date" />
+                <input type="hidden" asp-for="@Model[i].ConfirmStatus" id="status" />
+                <input type="hidden" asp-for="@Model[i].MightBeReserve" />
+                <input type="hidden" asp-for="@Model[i].SeatNumber" />
+            </div>
+
+
+
+        }
+
+
+
+
+
+
+
+    </div>
+</form>
+
+
+
+@section Scripts{
+
+
+    <script type="text/javascript">
+
+        
+
+        $(document).ready(function () {
+
+            
+
+        $( "[id='status']" ) .each(function(){
+            var p = $(this).val();
+            if ($(this).val() == 'true') {
+
+            }
+            console.log(p);
+        })
+            //var ab = 1;
+            //$.each($('#status'), function () {
+            //    var a = $(this).val();
+            //    console.log(a);
+                
+            //    console.log(ab);
+            //    ab++;
+
+            //    if (a == false) {
+            //         $(this).off('click');
+            //      alert("yes");
+
+            //    }
+            //    });
+
+
+            $('#ImageStatus img').click(function () {
+                var seat = $(this).attr('alt');
+               
+                if ($("input[name*='[" + seat + "].ConfirmStatus']").val() == "True" &&
+                    $("input[name*='[" + seat + "].MightBeReserve']").val() == "False"
+                ) {
+                    $(this).off('click');
+                }
+                else if ($("input[name*='[" + seat + "].ConfirmStatus']").val() == "False"
+                    && $(this).attr('src') == "/images/Green.svg"  &&
+                    $("input[name*='[" + seat + "].MightBeReserve']").val() == "True"
+                    
+
+                ) {
+
+
+                    $(this).attr('src', "/images/Black.svg");
+                    $("input[name*='[" + seat + "].ConfirmStatus']").val("True")
+                    console.log(seat);
+                    console.log("Take");
+
+
+
+                }else if ($("input[name*='[" + seat + "].ConfirmStatus']").val() == "True"
+                    && $(this).attr('src') == "/images/Black.svg"  &&
+                    $("input[name*='[" + seat + "].MightBeReserve']").val() == "True"
+                    
+
+                ) {
+
+
+                    $(this).attr('src', "/images/Green.svg");
+                    $("input[name*='[" + seat + "].ConfirmStatus']").val("False")
+                    console.log(seat);
+                    console.log("Canceled");
+
+
+
+                }
+                else {
+                    $(this).attr("src", "/images/Green.svg");
+                    $("input[name*='[" + seat + "].ConfirmStatus']").val("False")
+                    console.log("Canceled");
+                }
+                
+                //[36].PassengerId
+
+            });
+
+
+
+
+
+        });
+
+
+
+
+        //Set the section to select list according to class
+        $("#class").change(function () {
+            if ($("#class").val() == 0) {
+                var items = "<option value='0'>Select Section Nma </option>";
+                $("#section").html(items);
+            }
+            else {
+                var classid = $("#class").val();
+                var url = "/Admin/Home/checkthelistedsectionforClass";
+                $.getJSON(url,{id:classid},function (data){
+                    var items = "<option value='0'>Select Section v &#x2935</option>";
+                    $("#section").empty();
+                    $.each(data, function (i, sec) {
+                        items += '<option value="' + sec.value + '">' + sec.text + '</option > ';
+                    });
+                    $("#section").html(items);
+                });
+
+            }
+        });
+
+    </script>
+
+
+}
+

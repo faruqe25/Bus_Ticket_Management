@@ -13,7 +13,9 @@ namespace BlankSpace.ViewModels
         public int BusScheduleId { get; set; }
         public int AgentId { get; set; }
         public int PassengerId { get; set; }
-       
+        public string SeatNumber { get; set; } 
+        public bool MightBeReserve{ get; set; }  
+
     }
        
 }
