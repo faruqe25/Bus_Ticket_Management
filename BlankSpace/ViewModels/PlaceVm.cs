@@ -7,7 +7,8 @@ namespace BlankSpace.ViewModels
 {
     public class PlaceVm
     {
-        public int PlaceId { get; set; }
+        public int PlaceVmId { get; set; } 
+        public int Serial { get; set; }
         public string PlaceName { get; set; }
     }
 }

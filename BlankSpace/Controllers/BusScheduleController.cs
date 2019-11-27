@@ -169,13 +169,62 @@ namespace BlankSpace.Controllers
         {
             Place b = new Place()
             {
-                PlaceId = a.PlaceId,
+                PlaceId = a.PlaceVmId,
                 PlaceName = a.PlaceName
             };
             _context.Places.Add(b);
             _context.SaveChanges();
             ModelState.Clear();
             return View();
+        }
+        public IActionResult UpdateRoute(int id) 
+        {
+            var item = _context.Places.AsNoTracking().Where(s => s.PlaceId == id).FirstOrDefault();
+
+            PlaceVm p = new PlaceVm()
+            {
+                PlaceName = item.PlaceName,
+                PlaceVmId = item.PlaceId,
+
+            };
+
+            return View(p);
+        }
+        [HttpPost]
+        public IActionResult UpdateRoute(PlaceVm a)
+        {
+            Place p = new Place()
+            {
+                PlaceName = a.PlaceName,
+                PlaceId = a.PlaceVmId,
+
+            };
+            _context.Places.Update(p);
+            _context.SaveChanges();
+
+
+            return RedirectToAction("RouteList");
+        }
+        public IActionResult RouteList()
+        {
+            var a = _context.Places.AsNoTracking().ToList();
+            var s = new List<PlaceVm>();
+            int c = 1;
+            foreach (var item in a)
+            {
+                PlaceVm p = new PlaceVm()
+                {
+                    PlaceName = item.PlaceName,
+                    PlaceVmId = item.PlaceId,
+                    Serial=c
+
+                };
+                s.Add(p);
+                c++;
+
+            }
+            
+            return View(s);
         }
 
     }

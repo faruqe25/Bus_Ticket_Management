@@ -98,6 +98,8 @@ namespace BlankSpace.Migrations
 
                     b.HasIndex("BusId");
 
+                    b.HasIndex("StartingFrom");
+
                     b.ToTable("BusSchedules");
                 });
 
@@ -231,6 +233,11 @@ namespace BlankSpace.Migrations
                     b.HasOne("BlankSpace.Models.Bus", "Bus")
                         .WithMany()
                         .HasForeignKey("BusId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BlankSpace.Models.Place", "Place")
+                        .WithMany()
+                        .HasForeignKey("StartingFrom")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

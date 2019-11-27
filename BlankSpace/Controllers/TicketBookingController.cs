@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BlankSpace.Database;
 using BlankSpace.Helper;
+using BlankSpace.Models;
 using BlankSpace.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -74,7 +75,7 @@ namespace BlankSpace.Controllers
         public JsonResult checktime(int id,int id2)
         {
             var d = _context.BusSchedules.AsNoTracking().Where(s => s.StartingFrom == id && s.Destination==id2).FirstOrDefault();
-
+            
             return Json(d.Time);
         }
         public JsonResult checkid(int id, int id2) 
@@ -136,7 +137,9 @@ namespace BlankSpace.Controllers
 
 
                 }
-
+                var price = _context.BusSchedules.AsNoTracking().
+                    Where(s => s.BusScheduleId == Tickets[1].BusScheduleId).FirstOrDefault();
+                ViewBag.Price = price.TicketPrice;
                 return View(SeatSent);
             }
             else
@@ -171,12 +174,51 @@ namespace BlankSpace.Controllers
                         }
                         SeatSent.Add(a);
                     }
-
-                    return View(SeatSent);
+                var price = _context.BusSchedules.AsNoTracking().
+                    Where(s => s.BusScheduleId == Ticket[1].BusScheduleId).FirstOrDefault();
+                ViewBag.Price = price.TicketPrice;
+                return View(SeatSent);
                 }
 
 
            
+        }
+        [HttpPost]
+        public IActionResult ConfirmTicket(List<TicketReservationVm> a,string PassengerName,int PassengerMobile)
+        {
+
+
+            var ab = a.Where(s => s.ConfirmStatus == true && s.MightBeReserve == true).ToList();
+           
+            if (ab.Count!=0)
+            {
+                Passenger p = new Passenger() {
+                    PassengerId=0,
+                    Mobile=PassengerMobile,
+                    Name=PassengerName
+
+                };
+                _context.Passengers.Add(p);
+                _context.SaveChanges();
+
+            
+
+            foreach (var item in ab)
+            {
+                TicketReservation c = new TicketReservation() {
+                    TicketReservationId=item.TicketReservationId,
+                    AgentId=item.AgentId,
+                    ConfirmStatus=item.ConfirmStatus,
+                    BusScheduleId=item.BusScheduleId,
+                    Date=item.Date,
+                    PassengerId=p.PassengerId, 
+                    SeatNumber=item.SeatNumber
+                };
+                _context.TicketReservations.Update(c);
+                _context.SaveChanges();
+            }
+            }
+            return View();
         }
     }
 }

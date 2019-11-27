@@ -13,7 +13,7 @@
         <form asp-action="Booking" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <input asp-for="BookingVmId" />
+                <input type="hidden" asp-for="BookingVmId" />
                 <label class="control-label h4"> Start the from  </label>
                 <select asp-for="StartingFrom" asp-items="@ViewBag.Start" id="Start" class="form-control" >
                     <option hidden disabled selected> Please Select City</option>

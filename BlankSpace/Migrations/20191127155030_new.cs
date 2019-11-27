@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BlankSpace.Migrations
 {
-    public partial class Seed : Migration
+    public partial class @new : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -96,29 +96,6 @@ namespace BlankSpace.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BusSchedules",
-                columns: table => new
-                {
-                    BusScheduleId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    TicketPrice = table.Column<int>(nullable: false),
-                    StartingFrom = table.Column<int>(nullable: false),
-                    Destination = table.Column<int>(nullable: false),
-                    Time = table.Column<string>(nullable: true),
-                    BusId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BusSchedules", x => x.BusScheduleId);
-                    table.ForeignKey(
-                        name: "FK_BusSchedules_Buses_BusId",
-                        column: x => x.BusId,
-                        principalTable: "Buses",
-                        principalColumn: "BusId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AssignedDrivers",
                 columns: table => new
                 {
@@ -141,6 +118,35 @@ namespace BlankSpace.Migrations
                         column: x => x.DriverId,
                         principalTable: "Drivers",
                         principalColumn: "DriverId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BusSchedules",
+                columns: table => new
+                {
+                    BusScheduleId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    TicketPrice = table.Column<int>(nullable: false),
+                    StartingFrom = table.Column<int>(nullable: false),
+                    Destination = table.Column<int>(nullable: false),
+                    Time = table.Column<string>(nullable: true),
+                    BusId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BusSchedules", x => x.BusScheduleId);
+                    table.ForeignKey(
+                        name: "FK_BusSchedules_Buses_BusId",
+                        column: x => x.BusId,
+                        principalTable: "Buses",
+                        principalColumn: "BusId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_BusSchedules_Places_StartingFrom",
+                        column: x => x.StartingFrom,
+                        principalTable: "Places",
+                        principalColumn: "PlaceId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -227,6 +233,11 @@ namespace BlankSpace.Migrations
                 column: "BusId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BusSchedules_StartingFrom",
+                table: "BusSchedules",
+                column: "StartingFrom");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TicketReservations_AgentId",
                 table: "TicketReservations",
                 column: "AgentId");
@@ -253,9 +264,6 @@ namespace BlankSpace.Migrations
                 name: "AssignedDrivers");
 
             migrationBuilder.DropTable(
-                name: "Places");
-
-            migrationBuilder.DropTable(
                 name: "TicketReservations");
 
             migrationBuilder.DropTable(
@@ -278,6 +286,9 @@ namespace BlankSpace.Migrations
 
             migrationBuilder.DropTable(
                 name: "Buses");
+
+            migrationBuilder.DropTable(
+                name: "Places");
         }
     }
 }

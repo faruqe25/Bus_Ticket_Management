@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlankSpace.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20191126162707_Seed")]
-    partial class Seed
+    [Migration("20191127155030_new")]
+    partial class @new
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -99,6 +99,8 @@ namespace BlankSpace.Migrations
                     b.HasKey("BusScheduleId");
 
                     b.HasIndex("BusId");
+
+                    b.HasIndex("StartingFrom");
 
                     b.ToTable("BusSchedules");
                 });
@@ -233,6 +235,11 @@ namespace BlankSpace.Migrations
                     b.HasOne("BlankSpace.Models.Bus", "Bus")
                         .WithMany()
                         .HasForeignKey("BusId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BlankSpace.Models.Place", "Place")
+                        .WithMany()
+                        .HasForeignKey("StartingFrom")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

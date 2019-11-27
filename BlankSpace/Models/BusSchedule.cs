@@ -17,14 +17,15 @@ namespace BlankSpace.Models
         public int BusScheduleId { get; set; }
         public int TicketPrice { get; set; }
         public int StartingFrom { get; set; }
-       
+      
+        [ForeignKey("StartingFrom")]
+        public Place Place{ get; set; } 
         public int Destination { get; set; }
-       
-    
+      
         public string Time { get; set; }
         public int BusId { get; set; }
         public Bus Bus { get; set; }
         public virtual ICollection<TicketReservation> TicketReservations { get; set; }
-
+       
     }
 }
