@@ -43,7 +43,25 @@ namespace BlankSpace.Database
                    PassengerId = 1,
                    Mobile = 0,
                }
+               ); 
+            modelBuilder.Entity<RoleType>().HasData(
+               new RoleType
+               {
+                   RoleName = "Admin",
+                   RoleTypeId = 1,
+                  
+               }
                );
+            modelBuilder.Entity<User>().HasData(
+              new User
+              {
+                  UserId =1,
+                  UserName = "admin@gmail.com",
+                  Password="admin",
+                  RoleTypeId=1
+
+              }
+              );
         }
 
     }

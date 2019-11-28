@@ -18,7 +18,7 @@ namespace BlankSpace.Controllers
             _context = context;
         }
 
-        public DatabaseContext _Context { get; }
+      
 
         public IActionResult AddNewAgent()
         {
@@ -37,6 +37,7 @@ namespace BlankSpace.Controllers
             };
             _context.Agents.Add(b);
             _context.SaveChanges();
+            ModelState.Clear();
             return View();
         }
         public IActionResult AgentList()
@@ -149,15 +150,90 @@ namespace BlankSpace.Controllers
 
             return View();
         }
-        //[HttpPost]
-        //public IActionResult AddRole()  
-        //{
-          
+        [HttpPost]
+        public IActionResult AddRole(RoleTypeVm a)
+        {
+
+            RoleType b=new RoleType()
+            { RoleName=a.RoleName,
+            RoleTypeId=a.RoleTypeId
+            
+            };
+            _context.RoleTypes.Add(b);
+            _context.SaveChanges();
+            ModelState.Clear();
+            return View();
+
+
+        }
+         public IActionResult RoleList()
+        {
+            var item1 = _context.RoleTypes.AsNoTracking().ToList();
+            var sent = new List<RoleTypeVm>();
+            int c = 1;
+            foreach (var item in item1)
+            {
+                RoleTypeVm b = new RoleTypeVm()
+                {
+                    RoleName = item.RoleName,
+                    RoleTypeId = item.RoleTypeId,
+                    Serial=c
+
+                };
+                sent.Add(b);
+                c++;
+            }
+
+
+            return View(sent);
+
+
+        }
+         public IActionResult UpdateRole(int id) 
+        {
+            var item = _context.RoleTypes.AsNoTracking().Where(a => a.RoleTypeId == id).FirstOrDefault();
 
             
-        //}
-        
-        
-        
+                RoleTypeVm b = new RoleTypeVm()
+                {
+                    RoleName = item.RoleName,
+                    RoleTypeId = item.RoleTypeId,
+                    
+
+                };
+               
+               
+
+            return View(b);
+
+
+        }
+        [HttpPost]
+        public IActionResult UpdateRole(RoleTypeVm item)  
+        {
+            
+            
+                RoleType b = new RoleType()
+                {
+                    RoleName = item.RoleName,
+                    RoleTypeId = item.RoleTypeId,
+                };
+            _context.RoleTypes.Update(b);
+            _context.SaveChanges();
+            return RedirectToAction("RoleList");
+
+
+        }
+
+        public IActionResult DeleteRole(int id)
+        {
+            var item = _context.RoleTypes.AsNoTracking().Where(a => a.RoleTypeId == id).FirstOrDefault();
+            _context.RoleTypes.Remove(item);
+            _context.SaveChanges();
+            return RedirectToAction("RoleList");
+        }
+
+
+
     }
 }

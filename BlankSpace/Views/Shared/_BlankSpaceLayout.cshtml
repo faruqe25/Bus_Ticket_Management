@@ -7,7 +7,7 @@
 
     <environment include="Development">
 
-       
+
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
         <link href="~/BlankSpace//bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -18,6 +18,8 @@
 
         <link href="~/BlankSpace/css/style.css" rel="stylesheet">
         <link href="~/BlankSpace/css/style-responsive.css" rel="stylesheet">
+
+       
     </environment>
     <environment exclude="Development">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
@@ -121,6 +123,8 @@
                             <span>Manage User</span>
                         </a>
                         <ul class="sub">
+                            <li><a asp-controller="User" asp-action="AddRole"> Add Role</a></li>
+                            <li><a asp-controller="User" asp-action="RoleList"> Role List</a></li>
                             <li><a asp-controller="User" asp-action="AddNewAgent">Add New Agent</a></li>
                             <li><a asp-controller="User" asp-action="AgentList"> Agent List</a></li>
                         </ul>
@@ -132,7 +136,7 @@
                         </a>
                         <ul class="sub">
                             <li><a asp-controller="TicketBooking" asp-action="Index">Ticket Booking</a></li>
-                            <li><a asp-controller="User" asp-action="AgentList"> Agent List</a></li>
+                            <li><a asp-controller="TicketBooking" asp-action="AgentList"> Agent List</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -162,6 +166,9 @@
         
 
         <environment include="Development">
+
+            <script src="~/BlankSpace/jspdf.min.js"></script>
+            <script src="~/BlankSpace/js/pdfFromHTML.js"></script>
             <script src="~/BlankSpace/AJAX/ajaxjQueryjquery1.11.3.min.js"></script>
             <script src="~/BlankSpace/AJAX/ajaxjqueryvalidate1.14.0jquery.validate.min.js"></script>
             <script src="~/BlankSpace/AJAX/jquery.validate.unobtrusive.min.js"></script>
@@ -176,10 +183,11 @@
             <script src="~/BlankSpace/lib/common-scripts.js"></script>
             <script type="text/javascript" src="~/BlankSpace/lib/gritter/js/jquery.gritter.js"></script>
             <script type="text/javascript" src="~/BlankSpace/lib/gritter-conf.js"></script>
+            @*<script type="text/javascript" src="~/BlankSpace/js/html2canvas.min.js"></script>*@
 
+           
 
-
-
+            
 
         </environment>
         <environment exclude="Development">

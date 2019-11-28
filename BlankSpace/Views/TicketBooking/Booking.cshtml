@@ -11,6 +11,31 @@
   content: "*";
   color: red;
 }
+    .AvailableCircle {
+  height: 20px;
+  width: 20px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+  
+}
+    .BookedCircle {
+  height: 20px;
+  width: 20px;
+  background-color: red;
+  border-radius: 50%;
+  display: inline-block;
+ 
+}
+    .SelectedCircle {
+  height: 20px;
+  width: 20px;
+  background-color: black;
+  border-radius: 50%;
+  display: inline-block;
+  
+ 
+}
 </style>
 <form id="ImageStatus" asp-action="ConfirmTicket" method="post">
     <h2 class="text-center"> Ticket Panel Booking</h2>
@@ -75,9 +100,12 @@
                 <label class="h4 control-label required-field"> Passenger Mobile</label>
                 <input required class="form-control validate" type="number" name="PassengerMobile" />
             </div>
+            <p style="display:inline-block" class="h5"> <span class="SelectedCircle"></span> 	&nbsp;Selected Seat </p>
+            <p style="display:inline-block" class="h5"> <span class="BookedCircle"></span> 	&nbsp;Already Booked </p>
+            <p style="display:inline-block" class="h5"> <span class="AvailableCircle"></span> 		&nbsp;Available Seat</p>
             <label class="h5">Price of each Seat :@ViewBag.Price tk only</label><br />
             <input type="hidden" value="@ViewBag.Price" id="Price" />
-            <label class="h5" >Total Cost Is:<span id="TotalCost">0</span>Tk only</label><br />
+            <label class="h5">Total Cost Is:<span id="TotalCost">0</span>Tk only</label><br />
             <label class="h5">Selected Seat</label><br />
             <span id="SetSelectedSeat"></span>
 
@@ -85,8 +113,10 @@
     </div>
     
     <br />
-    <div class="form-group col-md-4 col-md-offset-4" style="padding-top:20px">
+    <div class="form-group col-md-4 col-md-offset-3" style="padding-top:20px;padding-right:40px">
         <input type="submit" value="Confirm Ticket" class="btn btn-success" />
+        <a  asp-controller="TicketBooking" asp-action="Index" class="btn btn-danger"  >Cancel</a>
+       
     </div>
 </form>
 

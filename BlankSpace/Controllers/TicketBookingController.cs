@@ -183,41 +183,41 @@ namespace BlankSpace.Controllers
 
            
         }
-        [HttpPost]
-        public IActionResult ConfirmTicket(List<TicketReservationVm> a,string PassengerName,int PassengerMobile)
+        //[HttpPost]
+        public IActionResult ConfirmTicket(/*List<TicketReservationVm> a,string PassengerName,int PassengerMobile*/)
         {
 
 
-            var ab = a.Where(s => s.ConfirmStatus == true && s.MightBeReserve == true).ToList();
+            //var ab = a.Where(s => s.ConfirmStatus == true && s.MightBeReserve == true).ToList();
            
-            if (ab.Count!=0)
-            {
-                Passenger p = new Passenger() {
-                    PassengerId=0,
-                    Mobile=PassengerMobile,
-                    Name=PassengerName
+            //if (ab.Count!=0)
+            //{
+            //    Passenger p = new Passenger() {
+            //        PassengerId=0,
+            //        Mobile=PassengerMobile,
+            //        Name=PassengerName
 
-                };
-                _context.Passengers.Add(p);
-                _context.SaveChanges();
+            //    };
+            //    _context.Passengers.Add(p);
+            //    _context.SaveChanges();
 
             
 
-            foreach (var item in ab)
-            {
-                TicketReservation c = new TicketReservation() {
-                    TicketReservationId=item.TicketReservationId,
-                    AgentId=item.AgentId,
-                    ConfirmStatus=item.ConfirmStatus,
-                    BusScheduleId=item.BusScheduleId,
-                    Date=item.Date,
-                    PassengerId=p.PassengerId, 
-                    SeatNumber=item.SeatNumber
-                };
-                _context.TicketReservations.Update(c);
-                _context.SaveChanges();
-            }
-            }
+            //foreach (var item in ab)
+            //{
+            //    TicketReservation c = new TicketReservation() {
+            //        TicketReservationId=item.TicketReservationId,
+            //        AgentId=item.AgentId,
+            //        ConfirmStatus=item.ConfirmStatus,
+            //        BusScheduleId=item.BusScheduleId,
+            //        Date=item.Date,
+            //        PassengerId=p.PassengerId, 
+            //        SeatNumber=item.SeatNumber
+            //    };
+            //    _context.TicketReservations.Update(c);
+            //    _context.SaveChanges();
+            //}
+            //}
             return View();
         }
     }
