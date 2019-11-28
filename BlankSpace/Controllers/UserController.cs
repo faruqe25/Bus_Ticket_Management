@@ -143,6 +143,19 @@ namespace BlankSpace.Controllers
 
             return RedirectToAction("AgentList");
         }
+        public IActionResult AddRole()  
+        {
+
+
+            return View();
+        }
+        //[HttpPost]
+        //public IActionResult AddRole()  
+        //{
+          
+
+            
+        //}
         
         
         

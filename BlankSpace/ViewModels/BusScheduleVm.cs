@@ -12,6 +12,8 @@ namespace BlankSpace.ViewModels
         [Display(Name = "Journey Start From")]
         public int StartingFrom { get; set; }
         public int Destination { get; set; }
+        public string StartingFromName { get; set; }
+        public string DestinationName { get; set; }
         public string Time { get; set; }
         [Display(Name = "Ticket Price")]
         public int TicketPrice { get; set; }

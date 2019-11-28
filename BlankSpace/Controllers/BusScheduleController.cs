@@ -60,7 +60,26 @@ namespace BlankSpace.Controllers
         }
         public IActionResult ScheduleList()
         {
-            var s = _context.BusSchedules.AsNoTracking().Include(sp=>sp.Bus).ToList();
+            var ss = _context.BusSchedules.AsNoTracking().Include(sp=>sp.Bus).ToList();
+            var p = _context.Places.AsNoTracking().ToList();
+            var pp = _context.Places.AsNoTracking().ToList();
+            var s = from a in ss
+                    join ab in p on a.StartingFrom equals ab.PlaceId
+                    join aaab in pp on a.Destination equals aaab.PlaceId
+                  
+                    select new {
+
+                        BusScheduleId = a.BusScheduleId,
+                        DestinationName = aaab.PlaceName,
+                        StartingFromName = ab.PlaceName,
+                        Time = a.Time,
+                      
+                        CoachName = a.Bus.CoachName,
+                        TicketPrice = a.TicketPrice
+                    };
+
+
+
             var sent = new List<BusScheduleVm>();
             int c = 1;
             foreach (var item in s)
@@ -68,11 +87,11 @@ namespace BlankSpace.Controllers
                 BusScheduleVm sp = new BusScheduleVm()
                 {
                     BusScheduleId = item.BusScheduleId,
-                    Destination = item.Destination,
-                    StartingFrom = item.StartingFrom,
+                    DestinationName = item.DestinationName,
+                    StartingFromName = item.StartingFromName,
                     Time = item.Time,
                     Serial = c,
-                    CoachName=item.Bus.CoachName,
+                    CoachName=item.CoachName,
                     TicketPrice=item.TicketPrice
 
                 };
@@ -87,12 +106,20 @@ namespace BlankSpace.Controllers
         public IActionResult DetailsSchedule(int id)
         {
             var s = _context.BusSchedules.AsNoTracking().Where(sa => sa.BusScheduleId == id).Include(p=>p.Bus).FirstOrDefault();
+            var Destination = _context.Places.Where(ss => ss.PlaceId == s.Destination).FirstOrDefault();
+            var Start = _context.Places.Where(ss => ss.PlaceId == s.StartingFrom).FirstOrDefault();
+
+
+
+
+
+
 
             BusScheduleVm sp = new BusScheduleVm()
                 {
                     BusScheduleId = s.BusScheduleId,
-                    Destination = s.Destination,
-                    StartingFrom = s.StartingFrom,
+                    DestinationName = Destination.PlaceName,
+                    StartingFromName = Start.PlaceName,
                     Time = s.Time,
                     TicketPrice=s.TicketPrice,
                     CoachName=s.Bus.CoachName
@@ -102,12 +129,14 @@ namespace BlankSpace.Controllers
         public IActionResult DeleteSchedule(int id)
         {
             var s = _context.BusSchedules.AsNoTracking().Where(sa => sa.BusScheduleId == id).Include(a=>a.Bus).FirstOrDefault();
+            var Destination = _context.Places.Where(ss => ss.PlaceId == s.Destination).FirstOrDefault();
+            var Start = _context.Places.Where(ss => ss.PlaceId == s.StartingFrom).FirstOrDefault();
 
             BusScheduleVm sp = new BusScheduleVm()
             {
                 BusScheduleId = s.BusScheduleId,
-                Destination = s.Destination,
-                StartingFrom = s.StartingFrom,
+                DestinationName = Destination.PlaceName,
+                StartingFromName = Start.PlaceName,
                 Time = s.Time,
                 TicketPrice = s.TicketPrice,
                 CoachName = s.Bus.CoachName
@@ -127,6 +156,8 @@ namespace BlankSpace.Controllers
         {
             var bus = _context.Buses.AsNoTracking().ToList();
             ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
+            var Route1 = _context.Places.AsNoTracking().ToList();
+            ViewBag.Road = new SelectList(Route1, "PlaceId", "PlaceName");
             var s = _context.BusSchedules.AsNoTracking().Where(sa => sa.BusScheduleId == id).FirstOrDefault();
 
             BusScheduleVm sp = new BusScheduleVm()
@@ -204,6 +235,25 @@ namespace BlankSpace.Controllers
 
 
             return RedirectToAction("RouteList");
+        }
+        public IActionResult DeleteRoute(int id) 
+        {
+            try
+            {
+                var sp = _context.Places.Where(s => s.PlaceId == id).FirstOrDefault();
+                _context.Places.Remove(sp);
+                _context.SaveChanges();
+                return RedirectToAction("RouteList");
+
+            }
+            catch (Exception )
+            {
+                ViewBag.Error = "You can not delete this as it is used in another table ";
+                return RedirectToAction("RouteList");
+            }
+
+
+            
         }
         public IActionResult RouteList()
         {
