@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BlankSpace.Database;
 using BlankSpace.Models;
 using BlankSpace.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,7 +23,15 @@ namespace BlankSpace.Controllers
 
         public IActionResult AddNewAgent()
         {
-            return View();
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
         }
         [HttpPost]
         public IActionResult AddNewAgent(AgentVm a)
@@ -55,11 +64,41 @@ namespace BlankSpace.Controllers
         }
         public IActionResult AgentList()
         {
-            var a = _context.Agents.AsNoTracking().ToList();
-            var sent = new List<AgentVm>();
-            int c = 1;
-            foreach (var item in a)
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
+                var a = _context.Agents.AsNoTracking().ToList();
+                var sent = new List<AgentVm>();
+                int c = 1;
+                foreach (var item in a)
+                {
+                    AgentVm o = new AgentVm()
+                    {
+
+                        Address = item.Address,
+                        Name = item.Name,
+                        Mobile = item.Mobile,
+                        DOB = item.DOB,
+                        AgentId = item.AgentId,
+                        Serial = c
+                    };
+                    sent.Add(o);
+
+                    c++;
+                }
+                return View(sent);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
+        }
+        public IActionResult AgentDetails(int id)
+        {
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                var item = _context.Agents.AsNoTracking().Where(s => s.AgentId == id).FirstOrDefault();
+
                 AgentVm o = new AgentVm()
                 {
 
@@ -68,47 +107,41 @@ namespace BlankSpace.Controllers
                     Mobile = item.Mobile,
                     DOB = item.DOB,
                     AgentId = item.AgentId,
-                    Serial = c
+
                 };
-                sent.Add(o);
 
-                c++;
+
+                return View(o);
             }
-            return View(sent);
-        }
-        public IActionResult AgentDetails(int id)
-        {
-            var item = _context.Agents.AsNoTracking().Where(s => s.AgentId == id).FirstOrDefault();
-
-            AgentVm o = new AgentVm()
+            else
             {
-
-                Address = item.Address,
-                Name = item.Name,
-                Mobile = item.Mobile,
-                DOB = item.DOB,
-                AgentId = item.AgentId,
-
-            };
-
-
-            return View(o);
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
         public IActionResult DeleteAgent(int id)
         {
-            var item = _context.Agents.AsNoTracking().Where(s => s.AgentId == id).FirstOrDefault();
-
-            AgentVm o = new AgentVm()
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
-                Address = item.Address,
-                Name = item.Name,
-                Mobile = item.Mobile,
-                DOB = item.DOB,
-                AgentId = item.AgentId,
-            };
+                var item = _context.Agents.AsNoTracking().Where(s => s.AgentId == id).FirstOrDefault();
+
+                AgentVm o = new AgentVm()
+                {
+                    Address = item.Address,
+                    Name = item.Name,
+                    Mobile = item.Mobile,
+                    DOB = item.DOB,
+                    AgentId = item.AgentId,
+                };
 
 
-            return View(o);
+                return View(o);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
         }
         [HttpPost]
         public IActionResult DeleteAgent(AgentVm a) 
@@ -123,19 +156,27 @@ namespace BlankSpace.Controllers
         }
         public IActionResult UpdateAgent(int id) 
         {
-            var item = _context.Agents.AsNoTracking().Where(s => s.AgentId == id).FirstOrDefault();
-
-            AgentVm o = new AgentVm()
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
-                Address = item.Address,
-                Name = item.Name,
-                Mobile = item.Mobile,
-                DOB = item.DOB,
-                AgentId = item.AgentId,
-            };
+                var item = _context.Agents.AsNoTracking().Where(s => s.AgentId == id).FirstOrDefault();
+
+                AgentVm o = new AgentVm()
+                {
+                    Address = item.Address,
+                    Name = item.Name,
+                    Mobile = item.Mobile,
+                    DOB = item.DOB,
+                    AgentId = item.AgentId,
+                };
 
 
-            return View(o);
+                return View(o);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
         }
         [HttpPost]
         public IActionResult UpdateAgent(AgentVm item) 
@@ -157,11 +198,19 @@ namespace BlankSpace.Controllers
 
             return RedirectToAction("AgentList");
         }
-        public IActionResult AddRole()  
+        public IActionResult AddRole()
         {
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
 
-            return View();
+           
         }
         [HttpPost]
         public IActionResult AddRole(RoleTypeVm a)
@@ -181,44 +230,60 @@ namespace BlankSpace.Controllers
         }
          public IActionResult RoleList()
         {
-            var item1 = _context.RoleTypes.AsNoTracking().ToList();
-            var sent = new List<RoleTypeVm>();
-            int c = 1;
-            foreach (var item in item1)
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
-                RoleTypeVm b = new RoleTypeVm()
+                var item1 = _context.RoleTypes.AsNoTracking().ToList();
+                var sent = new List<RoleTypeVm>();
+                int c = 1;
+                foreach (var item in item1)
                 {
-                    RoleName = item.RoleName,
-                    RoleTypeId = item.RoleTypeId,
-                    Serial=c
+                    RoleTypeVm b = new RoleTypeVm()
+                    {
+                        RoleName = item.RoleName,
+                        RoleTypeId = item.RoleTypeId,
+                        Serial = c
 
-                };
-                sent.Add(b);
-                c++;
+                    };
+                    sent.Add(b);
+                    c++;
+                }
+
+
+                return View(sent);
             }
-
-
-            return View(sent);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
 
 
         }
          public IActionResult UpdateRole(int id) 
         {
-            var item = _context.RoleTypes.AsNoTracking().Where(a => a.RoleTypeId == id).FirstOrDefault();
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                var item = _context.RoleTypes.AsNoTracking().Where(a => a.RoleTypeId == id).FirstOrDefault();
 
-            
+
                 RoleTypeVm b = new RoleTypeVm()
                 {
                     RoleName = item.RoleName,
                     RoleTypeId = item.RoleTypeId,
-                    
+
 
                 };
-               
-               
 
-            return View(b);
 
+
+                return View(b);
+
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
 
         }
         [HttpPost]
@@ -240,10 +305,18 @@ namespace BlankSpace.Controllers
 
         public IActionResult DeleteRole(int id)
         {
-            var item = _context.RoleTypes.AsNoTracking().Where(a => a.RoleTypeId == id).FirstOrDefault();
-            _context.RoleTypes.Remove(item);
-            _context.SaveChanges();
-            return RedirectToAction("RoleList");
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                var item = _context.RoleTypes.AsNoTracking().Where(a => a.RoleTypeId == id).FirstOrDefault();
+                _context.RoleTypes.Remove(item);
+                _context.SaveChanges();
+                return RedirectToAction("RoleList");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
 
 

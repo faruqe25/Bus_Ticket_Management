@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BlankSpace.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20191129091543_Admin")]
-    partial class Admin
+    [Migration("20191129192344_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

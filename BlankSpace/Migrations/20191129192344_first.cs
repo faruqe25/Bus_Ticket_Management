@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BlankSpace.Migrations
 {
-    public partial class @new : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -216,6 +216,16 @@ namespace BlankSpace.Migrations
                 table: "Passengers",
                 columns: new[] { "PassengerId", "Mobile", "Name" },
                 values: new object[] { 1, 0L, "Null" });
+
+            migrationBuilder.InsertData(
+                table: "RoleTypes",
+                columns: new[] { "RoleTypeId", "RoleName" },
+                values: new object[] { 1, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "UserId", "Password", "RoleTypeId", "UserName" },
+                values: new object[] { 1, "admin", 1, "admin@gmail.com" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AssignedDrivers_BusId",

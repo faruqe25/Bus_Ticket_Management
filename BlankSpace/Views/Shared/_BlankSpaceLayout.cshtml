@@ -80,8 +80,8 @@
                             <span>Dashboard</span>
                         </a>
                     </li>
-
-                    @if (Context.Session.GetString("UserRole") == "1")
+                    @{ var a = Context.Session.GetString("UserRole");}
+                    @if (a == "1")
                     {
                         <li class="sub-menu">
                             <a href="javascript:;">
@@ -108,7 +108,7 @@
                         </li>
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa fa-clock-o"></i>
+                                <i class="fa fa-road"></i>
                                 <span>Manage Bus Route</span>
                             </a>
                             <ul class="sub">
@@ -145,14 +145,63 @@
                     {
                         <li class="sub-menu">
                             <a href="javascript:;">
-                                <i class="fa fa-user"></i>
+                                <i class="fa fa-ticket"></i>
                                 <span>Ticket Management</span>
                             </a>
                             <ul class="sub">
                                 <li><a asp-controller="TicketBooking" asp-action="Index">Ticket Booking</a></li>
-                                <li><a asp-controller="TicketBooking" asp-action="GenrateScript"> Genrate Script</a></li>
+                                <li><a asp-controller="TicketBooking" asp-action="Scripts"> Genrate Script</a></li>
                             </ul>
                         </li>
+
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa fa-bus"></i>
+                                <span>Manage Bus</span>
+                            </a>
+                            <ul class="sub">
+                                
+                                <li><a asp-controller="Bus" asp-action="BusList">Bus List</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa fa-male"></i>
+                                <span>Manage Driver</span>
+                            </a>
+                            <ul class="sub">
+                               
+                                <li><a asp-controller="Driver" asp-action="DriverList">Driver List</a></li>
+                              
+                                <li><a asp-controller="Driver" asp-action="AssignBusList">Assign Bus List</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa fa-clock-o"></i>
+                                <span>Manage Bus Route</span>
+                            </a>
+                            <ul class="sub">
+                              
+                                <li><a asp-controller="BusSchedule" asp-action="RouteList"> Route List</a></li>
+
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa fa-clock-o"></i>
+                                <span>Manage Bus Schedule</span>
+                            </a>
+                            <ul class="sub">
+                               
+                                <li><a asp-controller="BusSchedule" asp-action="ScheduleList"> Schedule List</a></li>
+
+                            </ul>
+                        </li>
+                       
+
+
                     }
                 </ul>
 

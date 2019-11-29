@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BlankSpace.Database;
 using BlankSpace.Models;
 using BlankSpace.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,17 @@ namespace BlankSpace.Controllers
         }
         public IActionResult NewDriver()
         {
-            return View();
+
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+               
         }
         [HttpPost]
         public IActionResult NewDriver(DriverVm d)
@@ -44,11 +55,40 @@ namespace BlankSpace.Controllers
         }
         public IActionResult DriverList()
         {
-            var s = _context.Drivers.AsNoTracking().ToList();
-            var dr = new List<DriverVm>();
-            int c = 1;
-            foreach (var item in s)
+            if (HttpContext.Session.GetString("UserRole") != null)
             {
+                var s = _context.Drivers.AsNoTracking().ToList();
+                var dr = new List<DriverVm>();
+                int c = 1;
+                foreach (var item in s)
+                {
+                    DriverVm se = new DriverVm()
+                    {
+                        DriverVmId = item.DriverId,
+                        Name = item.Name,
+                        Address = item.Address,
+                        Mobile = item.Mobile,
+                        LicenseNumber = item.LicenseNumber,
+
+
+                    };
+                    se.DriverSerial = c;
+                    c++;
+                    dr.Add(se);
+                }
+                return View(dr);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
+        }
+        public IActionResult UpdateDriver(int id)
+        {
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                var item = _context.Drivers.AsNoTracking().Where(s => s.DriverId == id).FirstOrDefault();
                 DriverVm se = new DriverVm()
                 {
                     DriverVmId = item.DriverId,
@@ -57,59 +97,62 @@ namespace BlankSpace.Controllers
                     Mobile = item.Mobile,
                     LicenseNumber = item.LicenseNumber,
 
-
                 };
-                se.DriverSerial = c;
-                c++;
-                dr.Add(se);
+                return View(se);
             }
-            return View(dr);
-        }
-        public IActionResult UpdateDriver(int id)
-        {
-            var item = _context.Drivers.AsNoTracking().Where(s => s.DriverId == id).FirstOrDefault();
-            DriverVm se = new DriverVm()
+            else
             {
-                DriverVmId = item.DriverId,
-                Name = item.Name,
-                Address = item.Address,
-                Mobile = item.Mobile,
-                LicenseNumber = item.LicenseNumber,
-
-            };
-            return View(se);
+                return RedirectToAction("Index", "Home");
+            }
+           
         }
         [HttpPost]
         public IActionResult UpdateDriver(DriverVm d)
         {
-            Driver di = new Driver()
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
-                DriverId = d.DriverVmId,
-                Name = d.Name,
-                Address = d.Address,
-                LicenseNumber = d.LicenseNumber,
-                Mobile = d.Mobile
+                Driver di = new Driver()
+                {
+                    DriverId = d.DriverVmId,
+                    Name = d.Name,
+                    Address = d.Address,
+                    LicenseNumber = d.LicenseNumber,
+                    Mobile = d.Mobile
 
 
-            };
-            _context.Drivers.Update(di);
-            _context.SaveChanges();
+                };
+                _context.Drivers.Update(di);
+                _context.SaveChanges();
 
-            return View();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
         public IActionResult DeleteDriver(int id)
         {
-            var item = _context.Drivers.AsNoTracking().Where(s => s.DriverId == id).FirstOrDefault();
-            DriverVm se = new DriverVm()
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
-                DriverVmId = item.DriverId,
-                Name = item.Name,
-                Address = item.Address,
-                Mobile = item.Mobile,
-                LicenseNumber = item.LicenseNumber,
+                var item = _context.Drivers.AsNoTracking().Where(s => s.DriverId == id).FirstOrDefault();
+                DriverVm se = new DriverVm()
+                {
+                    DriverVmId = item.DriverId,
+                    Name = item.Name,
+                    Address = item.Address,
+                    Mobile = item.Mobile,
+                    LicenseNumber = item.LicenseNumber,
 
-            };
-            return View(se);
+                };
+                return View(se);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
         }
         [HttpPost]
         public IActionResult DeleteDriver(DriverVm se)
@@ -121,27 +164,43 @@ namespace BlankSpace.Controllers
         public IActionResult DriverDetails(int id)
 
         {
-            var item = _context.Drivers.AsNoTracking().Where(s => s.DriverId == id).FirstOrDefault();
-            DriverVm se = new DriverVm()
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
-                DriverVmId = item.DriverId,
-                Name = item.Name,
-                Address = item.Address,
-                Mobile = item.Mobile,
-                LicenseNumber = item.LicenseNumber,
+                var item = _context.Drivers.AsNoTracking().Where(s => s.DriverId == id).FirstOrDefault();
+                DriverVm se = new DriverVm()
+                {
+                    DriverVmId = item.DriverId,
+                    Name = item.Name,
+                    Address = item.Address,
+                    Mobile = item.Mobile,
+                    LicenseNumber = item.LicenseNumber,
 
-            };
-            return View(se);
+                };
+                return View(se);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
         }
         public IActionResult AssignBus()
         {
-            var driver = _context.Drivers.AsNoTracking().ToList();
-            ViewBag.Driver = new SelectList(driver, "DriverId", "Name");
-            var bus = _context.Buses.AsNoTracking().ToList();
-            ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                var driver = _context.Drivers.AsNoTracking().ToList();
+                ViewBag.Driver = new SelectList(driver, "DriverId", "Name");
+                var bus = _context.Buses.AsNoTracking().ToList();
+                ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
 
 
-            return View();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
         }
         [HttpPost]
         public IActionResult AssignBus(AssignedDriverVm a)
@@ -165,72 +224,97 @@ namespace BlankSpace.Controllers
         }
         public IActionResult AssignBusList()
         {
-            var assignDriverList = _context.AssignedDrivers.
+            if (HttpContext.Session.GetString("UserRole") != null)
+            {
+                var assignDriverList = _context.AssignedDrivers.
                                 AsNoTracking().Include(s => s.Bus).
                                 Include(s => s.Driver).ToList();
-            var sent = new List<AssignedDriverVm>();
-            int c = 1;
-            foreach (var item in assignDriverList)
-            {
-                AssignedDriverVm a = new AssignedDriverVm() {
+                var sent = new List<AssignedDriverVm>();
+                int c = 1;
+                foreach (var item in assignDriverList)
+                {
+                    AssignedDriverVm a = new AssignedDriverVm()
+                    {
 
-                    DriverName = item.Driver.Name,
-                    CoachName = item.Bus.CoachName,
-                    AssignedDriverId = item.AssignedDriverId,
-                    Serial = c
+                        DriverName = item.Driver.Name,
+                        CoachName = item.Bus.CoachName,
+                        AssignedDriverId = item.AssignedDriverId,
+                        Serial = c
 
-                };
-                c++;
-                sent.Add(a);
+                    };
+                    c++;
+                    sent.Add(a);
 
+                }
+                return View(sent);
             }
-            return View(sent);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
         public IActionResult DetailsAssignDriver(int id)
         {
-            var assignDriver = _context.AssignedDrivers.
-                                AsNoTracking().Include(s => s.Bus).
-                                Include(s => s.Driver).Where(s => s.AssignedDriverId == id).
-                                FirstOrDefault();
-
-
-            AssignedDriverVm a = new AssignedDriverVm()
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
-
-                DriverName = assignDriver.Driver.Name,
-                CoachName = assignDriver.Bus.CoachName,
-                BusNumber= assignDriver.Bus.BusNumber,
-                DriverMobile= assignDriver.Driver.Mobile,
-                TotalSeat = assignDriver.Bus.TotalSeat
-                
-
-            };
+                var assignDriver = _context.AssignedDrivers.
+                                  AsNoTracking().Include(s => s.Bus).
+                                  Include(s => s.Driver).Where(s => s.AssignedDriverId == id).
+                                  FirstOrDefault();
 
 
-            return View(a);
+                AssignedDriverVm a = new AssignedDriverVm()
+                {
+
+                    DriverName = assignDriver.Driver.Name,
+                    CoachName = assignDriver.Bus.CoachName,
+                    BusNumber = assignDriver.Bus.BusNumber,
+                    DriverMobile = assignDriver.Driver.Mobile,
+                    TotalSeat = assignDriver.Bus.TotalSeat
+
+
+                };
+
+
+                return View(a);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
         }
         public IActionResult DeleteAssignedDriver(int id)
         {
-            var assignDriver = _context.AssignedDrivers.
-                                AsNoTracking().Include(s => s.Bus).
-                                Include(s => s.Driver).Where(s => s.AssignedDriverId == id).
-                                FirstOrDefault();
-
-
-            AssignedDriverVm a = new AssignedDriverVm()
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
-
-                DriverName = assignDriver.Driver.Name,
-                CoachName = assignDriver.Bus.CoachName,
-                BusNumber= assignDriver.Bus.BusNumber,
-                DriverMobile= assignDriver.Driver.Mobile,
-                TotalSeat = assignDriver.Bus.TotalSeat,
-                AssignedDriverId=assignDriver.AssignedDriverId
-
-            };
+                var assignDriver = _context.AssignedDrivers.
+                                  AsNoTracking().Include(s => s.Bus).
+                                  Include(s => s.Driver).Where(s => s.AssignedDriverId == id).
+                                  FirstOrDefault();
 
 
-            return View(a);
+                AssignedDriverVm a = new AssignedDriverVm()
+                {
+
+                    DriverName = assignDriver.Driver.Name,
+                    CoachName = assignDriver.Bus.CoachName,
+                    BusNumber = assignDriver.Bus.BusNumber,
+                    DriverMobile = assignDriver.Driver.Mobile,
+                    TotalSeat = assignDriver.Bus.TotalSeat,
+                    AssignedDriverId = assignDriver.AssignedDriverId
+
+                };
+
+
+                return View(a);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
         } 
         [HttpPost]
         public IActionResult DeleteAssignedDriver(AssignedDriverVm id2)
@@ -244,25 +328,33 @@ namespace BlankSpace.Controllers
         }
         public IActionResult UpdateAssignedDriver(int id)
         {
-            var assignDriver = _context.AssignedDrivers.
-                                AsNoTracking().Where(s => s.AssignedDriverId == id).
-                                FirstOrDefault();
-
-            var driver = _context.Drivers.AsNoTracking().ToList();
-            ViewBag.Driver = new SelectList(driver, "DriverId", "Name");
-            var bus = _context.Buses.AsNoTracking().ToList();
-            ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
-
-            
-            AssignedDriverVm a = new AssignedDriverVm()
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
+                var assignDriver = _context.AssignedDrivers.
+                                   AsNoTracking().Where(s => s.AssignedDriverId == id).
+                                   FirstOrDefault();
 
-                DriverId = assignDriver.DriverId,
-                BusId = assignDriver.BusId,
-                AssignedDriverId = assignDriver.AssignedDriverId
+                var driver = _context.Drivers.AsNoTracking().ToList();
+                ViewBag.Driver = new SelectList(driver, "DriverId", "Name");
+                var bus = _context.Buses.AsNoTracking().ToList();
+                ViewBag.Bus = new SelectList(bus, "BusId", "CoachName");
 
-            };
-            return View(a);
+
+                AssignedDriverVm a = new AssignedDriverVm()
+                {
+
+                    DriverId = assignDriver.DriverId,
+                    BusId = assignDriver.BusId,
+                    AssignedDriverId = assignDriver.AssignedDriverId
+
+                };
+                return View(a);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         } 
         [HttpPost]
         public IActionResult UpdateAssignedDriver(AssignedDriverVm ab)

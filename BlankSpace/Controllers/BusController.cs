@@ -41,7 +41,7 @@ namespace BlankSpace.Controllers
         }
         public IActionResult BusList()
         {
-            if (HttpContext.Session.GetString("UserRole") == "1")
+            if (HttpContext.Session.GetString("UserRole")!=null)
             {
                 var s = _context.GetAllBuses();
                 var busList = new List<BusVm>();

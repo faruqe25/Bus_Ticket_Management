@@ -70,7 +70,7 @@ namespace BlankSpace.Controllers
         }
         public IActionResult ScheduleList()
         {
-            if (HttpContext.Session.GetString("UserRole") == "1")
+            if (HttpContext.Session.GetString("UserRole") != null)
             {
                 var ss = _context.BusSchedules.AsNoTracking().Include(sp => sp.Bus).ToList();
                 var p = _context.Places.AsNoTracking().ToList();
@@ -332,7 +332,7 @@ namespace BlankSpace.Controllers
         }
         public IActionResult RouteList()
         {
-            if (HttpContext.Session.GetString("UserRole") == "1")
+            if (HttpContext.Session.GetString("UserRole") != null)
             {
 
                 var a = _context.Places.AsNoTracking().ToList();

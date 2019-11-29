@@ -6,6 +6,7 @@ using BlankSpace.Database;
 using BlankSpace.Helper;
 using BlankSpace.Models;
 using BlankSpace.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -66,19 +67,19 @@ namespace BlankSpace.Controllers
             var slist = new SelectList(de, "BusId", "CoachName");
 
             return Json(slist);
-        
-   
-           
-        } 
+
+
+
+        }
         [HttpGet]
         [HttpPost]
-        public JsonResult checktime(int id,int id2)
+        public JsonResult checktime(int id, int id2)
         {
-            var d = _context.BusSchedules.AsNoTracking().Where(s => s.StartingFrom == id && s.Destination==id2).FirstOrDefault();
-            
+            var d = _context.BusSchedules.AsNoTracking().Where(s => s.StartingFrom == id && s.Destination == id2).FirstOrDefault();
+
             return Json(d.Time);
         }
-        public JsonResult checkid(int id, int id2) 
+        public JsonResult checkid(int id, int id2)
         {
             var d = _context.BusSchedules.AsNoTracking().Where(s => s.StartingFrom == id && s.Destination == id2).FirstOrDefault();
 
@@ -86,46 +87,63 @@ namespace BlankSpace.Controllers
         }
 
         public IActionResult Index()
-        {
-            var start = _context.Places.AsNoTracking().ToList();
-            ViewBag.Start = new SelectList(start, "PlaceId", "PlaceName");
 
-            return View();
+        {
+            if (HttpContext.Session.GetString("UserRole") == "2")
+            {
+                var start = _context.Places.AsNoTracking().ToList();
+                ViewBag.Start = new SelectList(start, "PlaceId", "PlaceName");
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+
+
         }
-         public IActionResult Agent() 
+        public IActionResult Agent()
         {
-          
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
 
-            return View();
+
         }
 
         [HttpPost]
-        public IActionResult Booking(BookingVm b) 
+        public IActionResult Booking(BookingVm b)
         {
             var TicketList = _context.TicketReservations.
                  AsNoTracking().Include(a => a.BusSchedule).
                  Where(s => s.BusSchedule.BusId == b.BusId && s.BusSchedule.StartingFrom == b.StartingFrom
                  && s.BusSchedule.Destination == b.Destination && s.Date == b.Date).ToList();
-            if(TicketList.Count()==0)
+            if (TicketList.Count() == 0)
             {
                 var Seat = _context.Buses.Where(s => s.BusId == b.BusId).FirstOrDefault();
                 var Tickets = GenarateTicket.Ticket(Seat.TotalSeat, b.BookingVmId, b.Date);
 
-                var SeatSent=new List<TicketReservationVm>();
-                foreach (var item in Tickets )
+                var SeatSent = new List<TicketReservationVm>();
+                foreach (var item in Tickets)
                 {
                     _context.TicketReservations.Add(item);
                     _context.SaveChanges();
                     TicketReservationVm a = new TicketReservationVm()
-                    { 
-                        TicketReservationId=item.TicketReservationId,
-                        ConfirmStatus=item.ConfirmStatus,
-                        Date=item.Date,
-                        AgentId=item.AgentId,
-                        PassengerId=item.PassengerId,
-                        BusScheduleId=item.BusScheduleId,
-                        SeatNumber=item.SeatNumber
-                    
+                    {
+                        TicketReservationId = item.TicketReservationId,
+                        ConfirmStatus = item.ConfirmStatus,
+                        Date = item.Date,
+                        AgentId = item.AgentId,
+                        PassengerId = item.PassengerId,
+                        BusScheduleId = item.BusScheduleId,
+                        SeatNumber = item.SeatNumber
+
                     };
                     if (item.ConfirmStatus == false)
                     {
@@ -153,41 +171,41 @@ namespace BlankSpace.Controllers
                 var Ticket = _context.TicketReservations.
                  AsNoTracking().Include(a => a.BusSchedule).
                  Where(s => s.BusSchedule.BusId == b.BusId && s.BusSchedule.StartingFrom == b.StartingFrom
-                 && s.BusSchedule.Destination == b.Destination 
+                 && s.BusSchedule.Destination == b.Destination
                  && s.Date.Month == b.Date.Month
                  && s.Date.Year == b.Date.Year
                  && s.Date.Day == b.Date.Day).ToList();
 
                 var SeatSent = new List<TicketReservationVm>();
                 foreach (var item in Ticket)
+                {
+
+                    TicketReservationVm a = new TicketReservationVm()
                     {
-                        
-                        TicketReservationVm a = new TicketReservationVm()
-                        {
-                            TicketReservationId = item.TicketReservationId,
-                            ConfirmStatus = item.ConfirmStatus,
-                            Date = item.Date,
-                            AgentId = item.AgentId,
-                            PassengerId = item.PassengerId,
-                            BusScheduleId = item.BusScheduleId,
-                            SeatNumber=item.SeatNumber
+                        TicketReservationId = item.TicketReservationId,
+                        ConfirmStatus = item.ConfirmStatus,
+                        Date = item.Date,
+                        AgentId = item.AgentId,
+                        PassengerId = item.PassengerId,
+                        BusScheduleId = item.BusScheduleId,
+                        SeatNumber = item.SeatNumber
 
 
-                        };
-                        if (item.ConfirmStatus == false)
-                        {
-                            a.MightBeReserve = true;
-                        }
-                        SeatSent.Add(a);
+                    };
+                    if (item.ConfirmStatus == false)
+                    {
+                        a.MightBeReserve = true;
                     }
+                    SeatSent.Add(a);
+                }
                 var price = _context.BusSchedules.AsNoTracking().
                     Where(s => s.BusScheduleId == Ticket[1].BusScheduleId).FirstOrDefault();
                 ViewBag.Price = price.TicketPrice;
                 return View(SeatSent);
-                }
+            }
 
 
-           
+
         }
         [HttpPost]
         public IActionResult ConfirmTicket(List<TicketReservationVm> a, string PassengerName, int PassengerMobile)
@@ -222,7 +240,7 @@ namespace BlankSpace.Controllers
                         PassengerId = p.PassengerId,
                         SeatNumber = item.SeatNumber
                     };
-                    
+
                     _context.TicketReservations.Update(c);
                     _context.SaveChanges();
                     seatList.Add(c.SeatNumber);
@@ -234,7 +252,7 @@ namespace BlankSpace.Controllers
                 var s = from abc in ss
                         join ab1 in pa on abc.StartingFrom equals ab1.PlaceId
                         join aaab in pp on abc.Destination equals aaab.PlaceId
-                        where abc.BusScheduleId==ab[0].BusScheduleId
+                        where abc.BusScheduleId == ab[0].BusScheduleId
                         select new
                         {
                             DestinationName = aaab.PlaceName,
@@ -243,7 +261,7 @@ namespace BlankSpace.Controllers
 
                             CoachName = abc.Bus.CoachName,
                             TicketPrice = abc.TicketPrice,
-                           
+
                         };
 
 
@@ -254,24 +272,24 @@ namespace BlankSpace.Controllers
                     PassengerName = p.Name,
                     Mobile = p.Mobile,
                     Seat = seatList,
-                    
-               
 
 
 
-            }; 
+
+
+                };
                 foreach (var item in s)
                 {
                     t.Destination = item.DestinationName;
                     t.StartFrom = item.StartingFromName;
-                   
+
                     t.TicketPrice = item.TicketPrice;
                     t.Date = a[0].Date;
                     t.BusName = item.CoachName;
                     t.Time = item.Time;
                 }
                 t.TotalCost = t.TicketPrice * ab.Count();
-                
+
 
 
 
@@ -279,6 +297,51 @@ namespace BlankSpace.Controllers
                 return View(t);
             }
             return RedirectToAction("Index");
+
+
+
         }
+        public IActionResult Scripts()
+        {
+            if (HttpContext.Session.GetString("UserRole") == "2")
+            {
+
+                var a = _context.Buses.AsEnumerable().ToList();
+                ViewBag.Bus = new SelectList(a, "BusId", "CoachName");
+
+
+
+
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
+        [HttpPost]
+         public IActionResult ScriptsGenarate() 
+        {
+            if (HttpContext.Session.GetString("UserRole") == "2")
+            {
+
+                var a = _context.Buses.AsEnumerable().ToList();
+                ViewBag.Bus = new SelectList(a,"BusId", "CoachName");
+
+
+
+
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+        }
+
     }
 }
