@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using BlankSpace.Repository;
 using BlankSpace.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BlankSpace.Controllers
@@ -16,9 +17,20 @@ namespace BlankSpace.Controllers
         {
             _context = context;
         }
-        public IActionResult NewBus()
+        public IActionResult Index() 
         {
             return View();
+        }public IActionResult NewBus()
+        {
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
         [HttpPost]
         public IActionResult NewBus(BusVm v)
@@ -29,33 +41,48 @@ namespace BlankSpace.Controllers
         }
         public IActionResult BusList()
         {
-            var s = _context.GetAllBuses();
-            var busList = new List<BusVm>();
-            int c = 1;
-            foreach (var item in s)
+            if (HttpContext.Session.GetString("UserRole") == "1")
             {
-                BusVm a = new BusVm
+                var s = _context.GetAllBuses();
+                var busList = new List<BusVm>();
+                int c = 1;
+                foreach (var item in s)
                 {
-                    BusId=item.BusId,
-                    BusNumber=item.BusNumber,
-                    TotalSeat=item.TotalSeat,
-                    CoachName=item.CoachName,
-                    
-
-                };
-                a.BusSerial = c;
-                c++;
-                busList.Add(a);
+                    BusVm a = new BusVm
+                    {
+                        BusId = item.BusId,
+                        BusNumber = item.BusNumber,
+                        TotalSeat = item.TotalSeat,
+                        CoachName = item.CoachName,
 
 
+                    };
+                    a.BusSerial = c;
+                    c++;
+                    busList.Add(a);
 
+
+
+                }
+                return View(busList);
             }
-            return View(busList);
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
         }
         public IActionResult DeleteBus(int id)
         {
-            
-            return View(_context.GetBus(id));
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                return View(_context.GetBus(id));
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+          
         }
         [HttpPost]
         public IActionResult DeleteBus(BusVm a)
@@ -66,7 +93,15 @@ namespace BlankSpace.Controllers
         
         public IActionResult UpdateBus(int id)
         {
-            return View(_context.GetBus(id));
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                return View(_context.GetBus(id));
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
         }
 
         [HttpPost]
@@ -78,7 +113,16 @@ namespace BlankSpace.Controllers
 
         public IActionResult BusDetails(int id)
         {
-            return View(_context.GetBus(id));
+            if (HttpContext.Session.GetString("UserRole") == "1")
+            {
+                return View(_context.GetBus(id));
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+           
+
         }
 
 

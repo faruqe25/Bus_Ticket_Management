@@ -11,8 +11,11 @@ namespace BlankSpace.ViewModels
         public Int64 Mobile { get; set; } 
         public List<string> Seat { get; set; } 
         public int TotalCost { get; set; }
+        public DateTime Date { get; set; }
         public int TicketPrice { get; set; } 
         public string StartFrom { get; set; }
         public string Destination { get; set; } 
+        public string BusName { get; set; }  
+        public string Time { get; set; }   
     }
 }

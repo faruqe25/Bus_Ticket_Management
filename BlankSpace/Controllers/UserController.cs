@@ -37,6 +37,19 @@ namespace BlankSpace.Controllers
             };
             _context.Agents.Add(b);
             _context.SaveChanges();
+
+            User us = new User()
+            {
+                Password = b.Name + (b.Mobile % 100).ToString(),
+                RoleTypeId = 2,
+                UserName = b.Name + (b.Mobile % 100).ToString() + "@whitespace.com",
+                UserId = 0,
+            };
+            _context.Users.Add(us);
+            _context.SaveChanges();
+
+
+
             ModelState.Clear();
             return View();
         }

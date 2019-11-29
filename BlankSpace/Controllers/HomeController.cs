@@ -5,39 +5,54 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using BlankSpace.Models;
+using BlankSpace.ViewModels;
+using BlankSpace.Database;
+using Microsoft.AspNetCore.Http;
 
 namespace BlankSpace.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly DatabaseContext _context;
+
+        public HomeController(DatabaseContext context)
+        {
+            _context = context;
+        }
         public IActionResult Index()
         {
             return View();
         }
-
-        public IActionResult About()
+        [HttpPost]
+        public IActionResult Login(UserVm u)
         {
-            ViewData["Message"] = "Your application description page.";
+            var result = _context.Users.Where(s => s.UserName == u.UserName &&
+                           s.Password == u.Password).FirstOrDefault();
+            if(result!=null)
+            {
+                HttpContext.Session.SetString("UserName", result.UserName);
+                HttpContext.Session.SetString("UserRole", result.RoleTypeId.ToString());
+                if (result.RoleTypeId == 1)
+                {
+                    return RedirectToAction("Index", "Bus");
+                }
+                if (result.RoleTypeId == 2)
+                {
+                    return RedirectToAction("Index", "TicketBooking");
+                }
+            }
 
-            return View();
+           
+            return RedirectToAction("Index");
+
+        }
+       
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
         }
 
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
 
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

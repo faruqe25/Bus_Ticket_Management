@@ -33,7 +33,8 @@ namespace BlankSpace
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-
+            services.AddSession();
+            services.AddDistributedMemoryCache();
             services.AddDbContext<DatabaseContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
@@ -55,6 +56,7 @@ namespace BlankSpace
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseCookiePolicy();
 
             app.UseMvc(routes =>
