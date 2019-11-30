@@ -18,6 +18,7 @@ namespace BlankSpace.ViewModels
         public string Route { get; set; }   
         public List<string> Seat { get; set; }    
         public Int64 Mobile  { get; set; }  
+        public string BusName  { get; set; }   
 
     }
 }

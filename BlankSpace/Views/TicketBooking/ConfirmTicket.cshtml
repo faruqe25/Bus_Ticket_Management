@@ -43,7 +43,18 @@
                 {
                     var a = Model.Seat[i].ToString();
                     
-               <span class="h5">@a ,</span>
+            <span class="h5">
+                @a
+
+
+
+                        @if (i != Model.Seat.Count - 1)
+                        {
+                            <span>,</span>
+
+                        }
+
+                    </span>
                             
                     
                 }

@@ -305,14 +305,8 @@ namespace BlankSpace.Controllers
         {
             if (HttpContext.Session.GetString("UserRole") == "2")
             {
-
                 var a = _context.Buses.AsEnumerable().ToList();
                 ViewBag.Bus = new SelectList(a, "BusId", "CoachName");
-
-
-
-
-
                 return View();
             }
             else
@@ -322,19 +316,82 @@ namespace BlankSpace.Controllers
 
         }
         [HttpPost]
-         public IActionResult ScriptsGenarate() 
+         public IActionResult ScriptsGenarate(ScriptVm aa) 
         {
             if (HttpContext.Session.GetString("UserRole") == "2")
             {
+                var a = _context.BusSchedules.AsNoTracking().Where(s => s.BusId == aa.BusId).Include(cp=>cp.Bus).FirstOrDefault();
+                var ss = _context.TicketReservations.
+                    Include(s => s.Passenger).Include(ab => ab.BusSchedule).ToList();
+                var paseenger = _context.Passengers.AsNoTracking().ToList();
+                var Query = from t in _context.TicketReservations.Include(x=>x.BusSchedule).ThenInclude(y => y.Bus)
+                            .Include(m => m.BusSchedule.Place).
+                             Include(s => s.Passenger).ToList()/*/*.Include(ab => ab.BusSchedule)/*where*/
+                                                      //t.Date.Day == aa.Date.Day
+                                                      //&& t.Date.Month == aa.Date.Month
+                                                      //&& t.Date.Year == aa.Date.Year
+                            where t.PassengerId > 1
+                             && t.Date.Month == aa.Date.Month
+                             && t.Date.Year == aa.Date.Year
+                             && t.Date.Day == aa.Date.Day
+                             &&t.BusSchedule.BusId==aa.BusId
+                            group t by t.PassengerId into groupPassenger
+                            let temp = (
+                            from val in groupPassenger
+                            select new
+                            {
+                                Name=val.Passenger.Name,
+                                Mobile=val.Passenger.Mobile,
+                                Seat=val.SeatNumber,
+                                Statring =val.BusSchedule.Place.PlaceName,
+                                BusName=val.BusSchedule.Bus.CoachName,
+                            }
+                            ) select temp;
 
-                var a = _context.Buses.AsEnumerable().ToList();
-                ViewBag.Bus = new SelectList(a,"BusId", "CoachName");
+
+                if(Query.Count()==0)
+                {
+                    ViewBag.SMS = "No Data";
+                    return RedirectToAction("Scripts");
+                }
+
+                 var Destinaio0n =  _context.Places.Where(s => s.PlaceId == a.Destination).FirstOrDefault();
+                ViewBag.Destinaion = Destinaio0n.PlaceName;
+
+
+                var sent = new List<ScriptVm>();
+               
+               
+                foreach (var item in Query)
+                {
+                    var str = new List<string>();
+
+
+                    ScriptVm scriptVm = new ScriptVm();
+                    int abc = 1;
+                    foreach (var v in item)
+                    {
+                        if (abc == 1)
+                        {
+                             scriptVm = new ScriptVm();
+                        }
+
+                        scriptVm.Name = v.Name;
+                        scriptVm.Mobile = v.Mobile;
+                        scriptVm.Route = v.Statring;
+                        scriptVm.BusName = v.BusName;
+
+                        str.Add(v.Seat);
+                        abc++;
+                    }
 
 
 
+                    scriptVm.Seat = str;
+                    sent.Add(scriptVm);
+                }
 
-
-                return View();
+                return View(sent);
             }
             else
             {
