@@ -48,6 +48,7 @@ namespace BlankSpace.Controllers
             };
             _context.Drivers.Add(di);
             _context.SaveChanges();
+            ModelState.Clear();
 
 
 

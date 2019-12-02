@@ -47,23 +47,67 @@
                     <div class="registration">
                         Don't have an account yet?<br />
                         Contact with Admin
+                        <hr><b>
+                            <a data-toggle="modal" data-target="#myModal"> Need Help?</a>
+                        </b>
+
 
                     </div>
                 </div>
-                
+                <!-- Modal -->
+                <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+                    <div class="modal-dialog ">
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color:#6ab04c">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title text-center">Guideline for Admin</h4>
+                            </div>
+                            <div class="modal-body">
+                                <p><b class="h4">Step  1:</b> Login to the system using 'admin@whitespace.com' as username and 'admin' as &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; password</p>
+                                <p><b class="h4">Step  2:</b> Add new bus on Bus Management</p>
+                                <p><b class="h4">Step  3:</b> Add new Driver on Driver Management</p>
+                                <p><b class="h4">Step  4:</b> Assign the bus to the drive on Driver Management</p>
+                                <p><b class="h4">Step  5:</b> Assign new schedule for bus on Bus Schedule Management</p>
+                                <p><b class="h4">Step  6:</b> Add a role ("Agent") on User Management</p>
+                                <p>
+                                    <b class="h4">Step  7:</b> Add a agent on User Management.Note that:
+                                    Username will be the name and last &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;two digit  of mobile number .
+                                    <b><br /><u>Example:</u></b><br />Agent Name:Kamal <br /> Mobile :178954652<br />Username :Kamal52@whitespace.com <br />
+                                    Password:Kamal52
+                                </p>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button data-dismiss="modal" class="btn btn-success" type="button">I have understood</button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- modal -->
 
             </form>
         </div>
     </div>
-    
-    <script src="~/BlankSpace/jquery/jquery.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/BlankSpace/lib/jquery/jquery.min.js"></script>
+
     <script src="~/BlankSpace/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="~/BlankSpace/AJAX/ajaxjQueryjquery1.11.3.min.js"></script>
     <script src="~/BlankSpace/AJAX/ajaxjqueryvalidate1.14.0jquery.validate.min.js"></script>
     <script src="~/BlankSpace/AJAX/jquery.validate.unobtrusive.min.js"></script>
-   
-   
-  
+    <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+    <script type="text/javascript" src="~/BlankSpace/lib/jquery.backstretch.min.js"></script>
+    <script>
+        $.backstretch("~/images/index.jpg", {
+            speed: 500
+        });
+    </script>
+
+
+
 </body>
 
 </html>

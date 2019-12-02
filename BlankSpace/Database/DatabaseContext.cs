@@ -56,7 +56,7 @@ namespace BlankSpace.Database
               new User
               {
                   UserId =1,
-                  UserName = "admin@gmail.com",
+                  UserName = "admin@whitespace.com",
                   Password="admin",
                   RoleTypeId=1
 

@@ -39,7 +39,20 @@
                 <div class="fa fa-bars tooltips" data-placement="right" data-original-title=""></div>
             </div>
 
-            <a href="#" class="logo"><b>Admin</b></a>
+            <a href="#" class="logo"><b>
+    @if (Context.Session.GetString("UserRole") == "1")
+    {
+     <span>
+    Admin</span>
+        }
+    else
+     {
+       <sapn>Agent</sapn>
+      }
+
+
+
+</b></a>
 
             <div class="nav notify-row" id="top_menu">
 
