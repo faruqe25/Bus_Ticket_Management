@@ -33,7 +33,14 @@ namespace BlankSpace
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddSession();
+           services.AddSession(options =>
+        {
+            // Set a short timeout for easy testing.
+            options.IdleTimeout = TimeSpan.FromMinutes(30);
+            options.Cookie.HttpOnly = true;
+            // Make the session cookie essential
+            options.Cookie.IsEssential = true;
+        });
             services.AddDistributedMemoryCache();
             services.AddDbContext<DatabaseContext>(Options => Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
