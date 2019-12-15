@@ -88,43 +88,31 @@
 
 
 
+                 var element = document.getElementById('testdiv');
+
+        // Generate the PDF.
+                const options = {
+                    filename: 'Test.pdf',
+                    image: { type: 'jpeg' },
+                    margin: .5,
+                    html2canvas: {},
+                    jsPDF: { orientation: 'portrait', unit: 'in', format: 'letter', compressPDF: true }
+
+                };
+                html2pdf().from(element).set(options).save();
 
 
 
 
 
-
-                //html2canvas(document.getElementById("#testdiv"), {
-
-                //    onrendered: function (canvas) {
-                //        var img = canvas.toDataURL("image/png");
-                //        var doc = new jsPDF();
-                //        doc.addImage(img, 'JPEG', 20, 20);
-                //        doc.save('test.pdf');
-
-                //    }
-                //    }
-
-
-                //);
+               
 
 
 
 
-                //           var pdf = new jsPDF('p','pt','a4');
-                //pdf.addHTML(document.body,function() {
-                //    pdf.save('web.pdf');
-
-                //var pdf = new jsPDF('p', 'pt', 'letter');
-                //pdf.addHTML($('#testdiv')[0], function () {
-                //    pfillStyle = "#FFFFFF";
-                //    pdf.save('Test.pdf');
-                //});
-                var pdf = new jsPDF('p', 'pt', 'letter');
-                pdf.addHTML($('#testdiv')[0], function () {
-            pfillStyle="#FFFFFF";
-             pdf.save('Test.pdf');
- });
+             
+             
+               
 
             });
 

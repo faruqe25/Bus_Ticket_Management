@@ -3,17 +3,17 @@
     ViewData["Title"] = "ConfirmTicket";
 }
 
-<h2 id="print">Print Ticket</h2>
-<a href="#" onclick="HTMLtoPDF()">Download PDF</a>
+
+<input style="margin-top:20px " type="button" id="print" value="Print Ticket!" class="btn btn-success"/><br /><br />
 
 
-<div  class="row" id="testdiv" style="padding-left:40px;padding-right:40px;color:darkred ">
+<div class="row" id="testdiv" style="padding-left:40px;padding-right:40px;color:darkred ">
     <div class="row" style="border-style:dashed;padding:10px 10px 10px 10px  ">
         <hr style="margin-top:7px;margin-bottom:1px;" />
         <hr style="margin-top:1px;margin-bottom:1px;" />
         <h4 style="text-align:center">White Space Bus </h4>
         <p>
-            <b> <u>Route </u></b>  :@Model.StartFrom to @Model.Destination
+            <b> <u>Route </u></b>  :@Model.StartFrom  --->  @Model.Destination
             <br />
             <b> <u>Issue Date </u></b>  :  @DateTime.Now
 
@@ -42,9 +42,9 @@
                 @for (int i = 0; i < Model.Seat.Count; i++)
                 {
                     var a = Model.Seat[i].ToString();
-                    
-            <span class="h5">
-                @a
+
+                    <span class="h5">
+                        @a
 
 
 
@@ -55,8 +55,8 @@
                         }
 
                     </span>
-                            
-                    
+
+
                 }
             </div>
 
@@ -70,7 +70,7 @@
         <div class="row">
             <div class="col-md-7">
                 <div class="col-md-6">
-                    <b><u>Bus Name( Coach)</u></b>  <br />
+                    <b><u>Bus Name( Coach )</u></b><br />
                     @Model.BusName
                     <br />
                     <b><u>Total Fare</u></b>
@@ -79,12 +79,12 @@
                 </div>
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        <b><u>Reporting Time</u></b>  <br />
+                        <b><u>Reporting Time</u></b><br />
                         11 pm
                         <br />
                         <b><u>Departure Time</u></b>
                         <br />
-                        @Model.Time 
+                        @Model.Time
                     </div>
                 </div>
             </div>
@@ -93,7 +93,7 @@
                 <b><u>Bording Point Location </u></b>  <br />
                 <b> <u> Jouney Start</u> </b>: @Model.StartFrom <br />
                 <b><u>Destination</u></b>: @Model.Destination<br />
-                <b><u>Date</u></b>: @Model.Date.ToString("dd/mm/yy")
+                <b><u>Date</u></b>: @Model.Date.ToString("dd/MM/yy")
 
 
             </div>
@@ -115,10 +115,32 @@
 @section Scripts{
 
     <script type="text/javascript">
+        
+
         $(document).ready(function () {
+
+
             $("#print").click(function () {
 
 
+                var element = document.getElementById('testdiv');
+
+        // Generate the PDF.
+                const options = {
+                    filename: 'Test.pdf',
+                    image: { type: 'jpeg' },
+                    html2canvas: {},
+                    jsPDF: { orientation: 'Landscape', unit: 'in', format: 'letter', compressPDF: true }
+
+                };
+                html2pdf().from(element).set(options).save();
+                
+        //html2pdf().from(element).set({
+        //  margin: .5,
+        //  filename: 'test.pdf',
+        //  html2canvas: { scale: 1 },
+        //  jsPDF: {orientation: 'portrait', unit: 'in', format: 'letter', compressPDF: true}
+        //}).save();
 
 
 
@@ -126,56 +148,8 @@
 
 
 
-                //html2canvas(document.getElementById("#testdiv"), {
+                
 
-                //    onrendered: function (canvas) {
-                //        var img = canvas.toDataURL("image/png");
-                //        var doc = new jsPDF();
-                //        doc.addImage(img, 'JPEG', 20, 20);
-                //        doc.save('test.pdf');
-
-                //    }
-                //    }
-
-
-                //);
-
-
-
-
-    //           var pdf = new jsPDF('p','pt','a4');
-    //pdf.addHTML(document.body,function() {
-    //    pdf.save('web.pdf');
-  
-                var pdf = new jsPDF('p', 'pt', 'letter');
-                pdf.addHTML($('#testdiv')[0], function () {
-            pfillStyle="#FFFFFF";
-             pdf.save('Test.pdf');
- });
-                //var doc = new jsPDF("p", "pt", "letter"),
-                //    source = $("#testdiv")[0],
-                //    margins = {
-                //        top: 40,
-                //        bottom: 60,
-                //        left: 40,
-                //        width: 522
-                //    };
-                //doc.fromHTML(
-                //    source, // HTML string or DOM elem ref.
-                //    margins.left, // x coord
-                //    margins.top, {
-                //    // y coord
-                //    width: margins.width // max width of content on PDF
-                //},
-
-                //    function (dispose) {
-                //        // dispose: object with X, Y of the last line add to the PDF
-                //        //          this allow the insertion of new lines after html
-                //        doc.save("Test.pdf");
-
-                //    },
-                //    margins
-                //);
 
             });
 
